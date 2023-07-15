@@ -27,6 +27,8 @@ Currently only Russian documentation exists.
 [GithubActions](https://github.com/Panzerschrek/U-00DC-Sprache/actions/workflows/main.yml).
 Here binaries are available for latest Ü compiler builds.
 
+[Web Demo](/web_demo.md)
+
 
 ### Related publications
 
