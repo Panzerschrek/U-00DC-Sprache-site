@@ -1,6 +1,4 @@
-![](logo-Gebrochene-Grotesk.png)
-
-## About
+### About
 
 Ü is a statically-typed compiled programming language.
 
