@@ -32,6 +32,7 @@ jobs:
         id: download-artifact
         uses: dawidd6/action-download-artifact@v2
         with:
+          repo: Panzerschrek/U-00DC-Sprache
           workflow: interpreter_emscripten.yml
           if_no_artifact_found: fail
       - name: Unpack external resourfes
