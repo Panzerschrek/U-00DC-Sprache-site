@@ -31,8 +31,9 @@ jobs:
       - name: Download external resources
         id: download-artifact
         uses: dawidd6/action-download-artifact@v2
-        workflow: interpreter_emscripten.yml
-        if_no_artifact_found: fail
+        with:
+          workflow: interpreter_emscripten.yml
+          if_no_artifact_found: fail
       - name: Unpack external resourfes
         run: ./unpack_external_resources.sh
       - name: Setup Pages
