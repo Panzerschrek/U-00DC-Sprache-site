@@ -1,4 +1,6 @@
 #!/bin/bash
 
-unzip "Interpreter build.zip" &&\
-rm "Interpreter build.zip"
+mv build/Interpreter.js Interpreter.js &&\
+mv build/Interpreter.wasm Interpreter.wasm &&\
+mv build/Interpreter_launcher.js Interpreter_launcher.js &&\
+rm -r build
