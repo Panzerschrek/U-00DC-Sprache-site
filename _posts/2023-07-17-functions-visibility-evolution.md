@@ -2,12 +2,12 @@
 title:  Functions visibility evolution
 ---
 
-### Functions visibility evolution
+## Functions visibility evolution
 
 In this article i will explain, how functions (and not only functions) visibility evolved during Ü development.
 
 
-## Initial approaches
+### Initial approaches
 
 Ü language development was started in year 2016.
 But active development was started only in year 2017.
@@ -22,7 +22,7 @@ From now _linkonce_odr_ was used, together with _comdat any_.
 Such approach allowed to work with templates and even treat all functions, defined in common imported files, as sort of _inline_.
 
 
-## Moderate approach
+### Moderate approach
 
 Approach above was used pretty long.
 It lasted even during development of Compiler1 (year 2020).
@@ -50,7 +50,7 @@ It took now about 30 seconds to build Compiler1, instead of several minutes.
 Debug builds became much faster too.
 
 
-## Advanced approach
+### Advanced approach
 
 Approach above was good, but not good enough.
 
