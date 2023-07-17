@@ -94,7 +94,7 @@ _external_ linkage without a comdat will prevent it.
 And creation of _private_ function is now as simple as it can be - just define a function and it will be _private_, unless you create also a declaration in another file for it.
 
 
-## Conclusion
+### Conclusion
 
 Now Ü has reliable and configurable functions visibility model.
 Especially good is that no special language constructions are required to control visibility (_static_, like in C++, _pub_, like in Rust).
@@ -107,6 +107,6 @@ Will current linkage model change?
 It is likely (as history shows), but i think that it will no change so drastically as before.
 
 
-## Links
+### Links
 
 [More about linkage types](https://releases.llvm.org/15.0.0/docs/LangRef.html#linkage-types)
