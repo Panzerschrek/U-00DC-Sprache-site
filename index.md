@@ -32,17 +32,6 @@ Here binaries are available for latest Ü compiler builds.
 [Web Demo](/web_demo.md)
 
 
-### Related publications
-
-Russian, in retrochronological order:
-
-[Реализация генераторов в языке программирования Ü](https://habr.com/ru/articles/733088/)
-
-[Язык програмирования Ü — нелёгкий путь написания самодостаточного компилятора](https://habr.com/ru/articles/580024/)
-
-[Язык программирования Ü. Введение, мотивация к созданию, цели](https://habr.com/ru/articles/465553/)
-
-
 ### Authors
 
 Copyright © 2016-2023 Artöm "Panzerscrek" Kunz.
