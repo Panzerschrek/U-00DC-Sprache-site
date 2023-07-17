@@ -9,7 +9,14 @@ It is recommended to install and use proper compiler.
 <div>
 Input code:
 <br>
-<textarea id="input" spellcheck="false" style="font-family: monospace; width: 100%;" rows="12"></textarea>
+<textarea id="input" spellcheck="false" style="font-family: monospace; width: 100%;" rows="12">
+import "stdout.u"
+fn nomangle main() : i32
+{
+	ust::stdout_print("Hello, world!\n");
+	return 0;
+}
+</textarea>
 <br>
 <button onClick="CompileAndRun()"> Compile and run! </button>
 <br>
