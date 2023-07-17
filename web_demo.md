@@ -9,7 +9,7 @@ It is recommended to install and use proper compiler.
 <div>
 Input code:
 <br>
-<textarea id="input" style="font-family: monospace; width: 768px;" rows="12"></textarea>
+<textarea id="input" spellcheck="false" style="font-family: monospace; width: 100%;" rows="12"></textarea>
 <br>
 <button onClick="CompileAndRun()"> Compile and run! </button>
 <br>
@@ -18,11 +18,11 @@ Execution status:
 <br>
 Stdout:
 <br>
-<textarea id="output" readonly style="font-family: monospace; width: 768px;" rows="8"></textarea>
+<textarea id="output" readonly style="font-family: monospace; width: 100%;" rows="8"></textarea>
 <br>
 Stderr:
 <br>
-<textarea id="output_err" readonly style="font-family: monospace; width: 768px;" rows="8"></textarea>
+<textarea id="output_err" readonly style="font-family: monospace; width: 100%;" rows="8"></textarea>
 <script type="text/javascript">
 
 	var text_in_element = document.getElementById("input");
