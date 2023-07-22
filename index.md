@@ -34,4 +34,4 @@ Here binaries are available for latest Ü compiler builds.
 
 ### Authors
 
-Copyright © 2016-2023 Artöm "Panzerscrek" Kunz.
+Copyright © 2016-2023 "Panzerscrek".

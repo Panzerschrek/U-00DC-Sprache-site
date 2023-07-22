@@ -1,10 +1,12 @@
 ### Ü Web-Demo
 
 On this page you can try Ü interpreter.
-WebAssembly required.
+WebAssembly is required.
 
 Note that interpreter is pretty limited.
 It is recommended to install and use proper compiler.
+
+*ustlib* is available for import inside interpreter, but no other files.
 
 <div>
 Input code:
