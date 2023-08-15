@@ -2,7 +2,12 @@
 title:  Dead code checks
 ---
 
-## Motivation
+## Dead code checks
+
+In this article i will describe why and how i added dead code checks in Ü.
+
+
+### Motivation
 
 Ü is pretty restrictive language.
 For example, there are no explicit type conversions, reference-checking ensures absence of memory errors, there are a lot of class members and inheritance consistency checks, etc.
@@ -37,7 +42,7 @@ Now a special compilation error is generated, if the root of a simple expression
 * all cast operators
 * all type names in expression context
 
-Function call is considered not to be useless, even if such calls are constexpr.
+Function call is considered not to be useless, even if such calls are `constexpr`.
 `select` operator is considered useless, because in most cases it produces a value, than needs to be handled.
 `if` operator may be used instead of `select` with simple expression root.
 `safe` and `unsafe` expressions are inspected deeply.
@@ -51,7 +56,7 @@ arr[42]; // Indexing an array has no effect - error.
 select( true ? a : b ); // Error - result of 'select' is not used.
 cast_imut(x); // Error - useless cast.
 true; // Useless boolean constant.
-42; // Useless numeric constant
+42; // Useless numeric constant.
 "some_string"; // Useless string constant.
 tup[ i32, f32 ]; // Useless tuple type name.
 y; // Useless named operand.
@@ -84,8 +89,8 @@ Global name detection is implemented for global variables, type aliases, structs
 For functions and type templates usage check is performed per-item for set of things with same name.
 For example, if two overloaded functions with same name are declared, but only one is used (called or assigned to a function pointer) - an error about unused second function will be generated.
 
-It is important to mention, that global unused names check is performed only in things, declared inside main file (compilation root), but not for imported files.
-There is no reason to perform unused names check for imported files, since such files may be imported in other main (compiled) files and unused in this compilation unit names may be used in other files.
+It is important to mention, that global unused names check is performed only for things, declared inside main file (compilation root), but not for imported files.
+There is no reason to perform unused names check for imported files, since such files may be imported in other main (compiled) files and unused in this compilation unit names may be used in another.
 
 There are a couple of exceptions for unused functions.
 Special class methods - default constructor, copy construcotr, copy-assignment operator, equality-compare operator, destructor may be unused, but no error will be generated for them.
@@ -127,4 +132,4 @@ Or, if some code is not finished yet.
 
 There are a couple of ways to deal with it.
 First - it is possible to disable unused names check via special compiler option.
-Second (perfected way) - unused code may be move into an imported file.
+Second (preferred way) - unused code may be moved into an imported file.
