@@ -24,12 +24,14 @@ Currently only Russian documentation exists.
 
 [Source code](https://github.com/Panzerschrek/U-00DC-Sprache).
 
-[GithubActions](https://github.com/Panzerschrek/U-00DC-Sprache/actions/workflows/main.yml).
-Here binaries are available for latest Ü compiler builds.
-
 [Blog](/blog.md)
 
 [Web Demo](/web_demo.md)
+
+
+### Downloads
+
+[GNU/Linux build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler artifacts.zip).
 
 
 ### Authors
