@@ -22,16 +22,16 @@ Currently only Russian documentation exists.
 
 ### Links
 
-[Source code](https://github.com/Panzerschrek/U-00DC-Sprache).
+[Source code](https://github.com/Panzerschrek/U-00DC-Sprache)
 
 [Blog](/blog.md)
 
 [Web Demo](/web_demo.md)
 
 
-### Downloads
+### Compiler downloads
 
-[GNU/Linux build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler%20artifacts.zip).
+[GNU/Linux build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler%20artifacts.zip)
 
 
 ### Authors
