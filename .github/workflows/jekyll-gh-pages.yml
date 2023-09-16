@@ -37,6 +37,15 @@ jobs:
           workflow: main.yml
           if_no_artifact_found: fail
           skip_unpack: true
+      - name: Download Windows build
+        id: download-windows-build
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          repo: Panzerschrek/U-00DC-Sprache
+          branch: master
+          workflow: windows.yml
+          if_no_artifact_found: fail
+          skip_unpack: true
       - name: Download emscripten build
         id: download-emscripten-build
         uses: dawidd6/action-download-artifact@v2
