@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Download GNU/Linux build
-        id: download-artifact
+        id: download-gnu-linux-build
         uses: dawidd6/action-download-artifact@v2
         with:
           repo: Panzerschrek/U-00DC-Sprache
@@ -38,7 +38,7 @@ jobs:
           if_no_artifact_found: fail
           skip_unpack: true
       - name: Download emscripten build
-        id: download-artifact
+        id: download-emscripten-build
         uses: dawidd6/action-download-artifact@v2
         with:
           repo: Panzerschrek/U-00DC-Sprache
