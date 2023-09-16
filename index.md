@@ -31,7 +31,8 @@ Currently only Russian documentation exists.
 
 ### Compiler downloads
 
-[GNU/Linux build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler%20artifacts.zip)
+[GNU/Linux build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_gnu_linux.zip)
+[Windows build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_windows.zip)
 
 
 ### Authors
