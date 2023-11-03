@@ -18,7 +18,7 @@ Until generators were introduced.
 Generator is a variable, created by generator-function.
 It stores inside references to all reference arguments of called generator-function.
 But logically it had only one reference inside.
-That created a lot of false-linking while using generators - references obtained as result of generator call had false-positive links to all arguments of a generator, not only necessary.
+That created a lot of false-linking while using generators - references obtained as result of generator call had false-positive links to all arguments of a generator, not only necessary ones.
 
 So, for generators single inner reference node limitation was pretty significant.
 Even worse it may be not for generators, but for async functions (another kind of coroutines), because async functions must behave as close as possible to regular functions.
@@ -37,11 +37,11 @@ I performed this works in steps.
 
 #### Inner reference nodes everywhere
 
-First of all, introducing of multiple inner reference nodes requires reworking of reference pollution code.
+First of all, introduction of multiple inner reference nodes requires reworking of reference pollution code.
 Earlier reference pollution were implementing by searching a path in the references graph from current node of pollution destination to all variables and creating links to inner reference node of this variable.
 But which node to choose, if multiple inner nodes are possible?
 
-I decided to solve this problem by adding inner reference nodes not only for variables, but also for references.
+I decided to solve this problem by creating inner reference nodes not only for variables, but also for references.
 If a reference node has a link to other node (reference or variable), links between corresponding inner reference nodes are also created.
 Thus it became possible to trace target inner reference node of pollution destination variable by finding path to it, starting from inner reference node of a reference for which pollution is performed.
 
@@ -54,7 +54,7 @@ Only a couple of synthetic tests were broken because of changes described above.
 
 #### Types with multiple reference nodes inside
 
-How many inner reference nodes has a specific node is determined now by type of this node.
+How many inner reference nodes has a specific node is determined now by the type of this node.
 Each type has 0 or more inner reference tags, for which reference nodes are created.
 Fundamental types, enums, raw pointers have 0 reference tags.
 Structs/classes may have 0 or more tags.
@@ -94,7 +94,7 @@ Each reference description consists of two chars.
 First char - index of function param from "0" up to "9".
 Second char - "_" for reference of reference param itself or letters from "a" up to "z" for inner references of the param type.
 
-For the returned references an array of `[ char8, 2 ]` is expected - for describing param references, which are returned.
+For the returned references an array of `[ char8, 2 ]` elements is expected - for describing param references, which are returned.
 For the returned inner references a tuple of `[ char8, 2 ]` arrays is expected - for describing param references, which are returned for each inner reference tag of returned type.
 
 Such new notation has absolute flexibility - it maps almost 1 to 1 to internal compiler structures for reference notation.
@@ -109,8 +109,8 @@ In order to reduce this verbosity i added helper code for some common notation c
 
 Introduction of multiple inner reference tags for types allows finally to fix generators and (later) allow to implement async functions.
 
-Now number of inner reference tags of generator-function is determined based on function params.
-Number of tags for generator-function is sum of number of tags for each its param.
+Now number of inner reference tags of generator variable type is determined based on generator-function params.
+Number of tags is sum of number of tags for each its param.
 Reference param adds 1 reference tag.
 Value param adds number of tags equal to number of tags of the param type.
 For now reference params of types with references inside are not supported.
@@ -123,7 +123,6 @@ Now it contains also return references/return inner references (as any function 
 
 
 ### Conclusion
-
 
 I spent more than 3 weeks to implement all changes described above.
 Before that i spent a lot more time trying to find a way, how to do it.
