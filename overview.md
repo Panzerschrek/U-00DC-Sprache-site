@@ -3,6 +3,10 @@
 Ü is a programming language designed primary for applications, where speed and safety are both important.
 It is heavily inspired by C++, a little bit by Rust and tries to fix some disadvantages of these languages.
 
+The main goals of Ü language development are good performance, minimizing of bugs possibility, good balance between readability and expressiveness.
+
+This article contains a short overview of most important Ü features.
+
 
 ### Compilation into machine code
 
@@ -10,28 +14,39 @@ Good performance is achievable only via compilation into native code.
 Interpretation or virtual machine is too slow.
 Because of that Ü targets machine code.
 
-It is based on LLVM library and thus an use whole LLVM infrastructure.
-Ü compiler support whatever processor architecture that is supported by LLVM.
+It is based on LLVM library and thus uses whole LLVM infrastructure.
+Ü compiler supports whatever processor architecture that is supported by LLVM.
 
 
 ### Context-free syntax
 
-Syntax of Ü is context-fee, that simplifies compiler development and makes code more readable.
+Syntax of Ü is context-free, that simplifies compiler development and makes code more readable.
 
 
 ### Order-independent top level definitions
 
 Ü compiler is smart enough to perform symbol tables preevaluation.
+Thus reverse definitions order (like in C) and (sometimes) prototypes usage may be avoided.
 
 
 ### Imports model
+
+"import" in Ü means compilation of specified file and logical merging of the result into current compilation unit.
+All imported files are compiled independently on each other, rather than merging file contents together and compiling this "as is", as does (for example) C++ compiler.
+All contents of imported files considered to be inline - no special "inline" keyword is required.
+
+It is important to mention that imports in Ü are designed for usage of separate header/implementation files.
+It is recommended to do such, but it still possible to use "header-only" files.
+Import dependency loops are not possible.
+
+A model with preferred usage of "headers" may seem to be outdated, but in reality it forces to decouple interface from implementation details and improve readability of the interface part.
 
 
 ### Straightforward types evaluation model
 
 Types of all function parameters/function return values, class fields must be specified explicitly.
 Types for variables may be specified, but it is possible to avoid type specifying via `auto`.
-There are also a couple of constructios where it is unnecessary to specify types, but mostly they must be specified.
+There are also a couple of constructions where it is unnecessary to specify types, but mostly they must be specified.
 
 There is no complex type calculation mechanisms.
 That significantly simplifies compiler and improves readability.
@@ -59,6 +74,11 @@ It is still possible to shot the leg via `unsafe` blocks/expressions/functions, 
 
 Same mechanism that ensures memory safety may be used to ensure thread safety.
 
+There are of course some disadvantages of this mechanism.
+A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
+Some (uncommon) code patterns are not (effectively) achievable in Ü without usage of `unsafe`.
+But it most cases usage of `unsafe` is rarely needed - mostly for interaction with foreign code.
+
 
 ### Mandatory initialization
 
@@ -72,7 +92,7 @@ User types initialization is also required, but it may be omitted if user type h
 Ü has support of reference-variables, fields, function parameters and return values.
 Usage of references is simple - there is no need for manual/boilerplate take reference/dereference operators, like for C pointers or Rust references.
 It is much like in C++.
-But for code simplicity references are not part of type system, rather than part of variable/field declarations, function signatures.
+But for code simplicity references are not part of the type system, rather than a part of variable/field declarations, function signatures.
 
 
 ### Assignment/copying model
@@ -82,6 +102,13 @@ There is no need to call something like `clone` to create copy of a value.
 
 But Ü is still effective and allows to avoid unnecessary copying.
 Temporary values are effectively moved, named values may be moved manually via `move` operator.
+
+
+### No memory-dependent objects
+
+Objects in Ü have no specific defined memory location, as (for example) C++ requires.
+This allows to move objects effectively from one location to another and thus speed-up result code.
+In terms of C++ this means that no non-trivially-relocable types are allowed.
 
 
 ### Constructors
@@ -94,15 +121,15 @@ This  seems to be more elegant way of initialization, compared to factory functi
 ### Destructors
 
 One of the most important features of Ü is usage of destructors.
-`destructor` is a special method this is automatically called for variable at lifetime end.
+`destructor` is a special method this is automatically called for a variable at its lifetime end.
 
-Usage of destructors allow to implement robust and safe memory and resource management without relying on slow and complex garbage collection schemes.
+Usage of destructors allows to implement robust and safe memory and resource management without relying on slow and complex garbage collection schemes.
 
 
 ### Functions overloading
 
-Ü supports defining functions with same name in same space, as soon as parameter types differs.
-This allows to avoid boilerplate by definig different names/name suffixes for functions that do almost the same except a couple of details.
+Ü supports defining functions with same name in same space, as soon as signatures are different.
+This allows to avoid boilerplate by defining different names/name suffixes for functions that do almost the same except a couple of details.
 
 
 ### Operators overloading
@@ -114,7 +141,24 @@ Such feature allows for code to be expressive and compact simultaneously.
 ### Methods generation
 
 Ü allows to avoid boilerplate code by generating some methods for user types automatically.
-This includes destructors, default-constructors, copy-constructors, copy-assignemt operators, equality compare operators.
+This includes destructors, default-constructors, copy-constructors, copy-assignment operators, equality compare operators.
+
+
+### Rich type system
+
+Ü has basic set of built-in types and some ways to create composite types.
+
+Ü has several type categories:
+
+* fundamental scalars - integers (signed and unsigned), floating point, chars, bytes, bool, void
+* arrays with fixed size
+* tuples
+* structs and classes
+* enums - simple types with fixed set of possible predefined named values (much like in C++, but stricter)
+* function pointers
+* raw pointers (for unsafe code and foreign code interaction)
+
+These type kinds are sufficient to express any other complex data structures.
 
 
 ### Compile-time polymorphism
@@ -123,12 +167,12 @@ This includes destructors, default-constructors, copy-constructors, copy-assigne
 
 Important feature of Ü templates is Duck-typing.
 There are no traits/type requirements in templates.
-If a template performs some operation over given type (operator, copying, method call) code compiles if given type supports such operations and doesn't compile - if not.
+If a template performs some operation over given type (operator, copying, method call) code compiles if given type supports such operations and doesn't compiles - if not.
 Such system requires less boilerplate for both template autos and template users.
 
 There are some drawbacks of this scheme, like no errors check for non-instantiated templates.
 But it seems to be not so important.
-If it is necessary, something like generics and traits may be added later.
+If it is necessary, something like generics and traits may be added in future.
 
 
 ### Runtime polymorphism via inheritance
@@ -139,13 +183,34 @@ It is similar to C++, but is stronger, that allows to avoid some mistakes.
 Inheritance in Ü uses zero or one base and zero or many interfaces model.
 
 Inheritance is enabled only if necessary - if class has ancestors or is defined as polymorph.
-That allows for most classes not to be polymorph and thus avoid polymorhpism overhead (for virtual table pointers, for example) where it is not necessary.
+This allows for most classes not to be polymorph and thus avoid polymorhpism overhead (for virtual table pointers, for example) where it is not necessary.
 
 
 ### No exceptions
 
 Ü has an advantage of absence of exceptions.
-No exceptions means no hidden control flow and no possiblity to silently ignore errors.
+No exceptions means no hidden control flow and no possibility to silently ignore errors.
 This allows to improve overall code reliability.
 
 The absence of exceptions also may improve result performance and reduce result executables size.
+
+
+### Compile-time evaluation
+
+Ü supports compile-time evaluation via `constexpr` mechanism.
+Simple expressions and calls to `constexpr` functions with all arguments - compile-time constants are evaluated in compile-time.
+
+A function may be marked as `constexpr` if it uses a safe and deterministic subset of Ü - no `unsafe`, no memory allocations, no runtime polymorphism.
+
+
+### Compile-time type information
+
+Ü provides special operator `typeinfo` for type inspection.
+Together with `constexpr` evaluation it allows to write template code with different behavior specially designed/optimized for different types/type kinds.
+
+
+### Code structuring via namespaces
+
+Ü supports namespaces like in C++
+Namespaces may be used in different files, they may be opened and closed multiple times, nested namespaces are possible.
+Mechanism of namespaces allows to structure code independent on project files structure.
