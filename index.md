@@ -2,9 +2,9 @@
 
 Ü is a statically-typed compiled programming language.
 
-It is similar to C++ or Rust.
+Main goal is a safety, but not with cost of performance and verbosity.
 
-Main goal is a safety, but not with cost of verbosity.
+Read [introduction](/introduction.md) for more information.
 
 
 ### Development
