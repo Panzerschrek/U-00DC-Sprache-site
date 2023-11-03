@@ -2,9 +2,9 @@
 
 Ü is a statically-typed compiled programming language.
 
-Main goal is a safety, but not with cost of performance and verbosity.
+Main goal is a safety, but not with cost of bad performance and verbosity.
 
-Read [introduction](/introduction.md) for more information.
+Read [overview](/overview.md) for more information.
 
 
 ### Development
@@ -22,7 +22,8 @@ Currently only Russian documentation exists.
 
 ### Links
 
-[Source code](https://github.com/Panzerschrek/U-00DC-Sprache)
+[Source code](https://github.com/Panzerschrek/U-00DC-Sprache).
+Contributions are welcome!
 
 [Blog](/blog.md)
 
