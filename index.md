@@ -19,7 +19,7 @@ There are two compilers of Ü - Compiler0, written in C++ and Compiler1 - writte
 
 ### Documentation
 
-Documentation (russian) is available [here](/docs/ru/contents.html).
+Documentation (russian) is available [here](https://panzerschrek.github.io/U-00DC-Sprache-site/docs/ru/contents.html).
 
 Unfortunately this is it (for now).
 But you can help writing documentation for other languages.
