@@ -12,4 +12,6 @@ mv compiler_gnu_linux/docs docs &&\
 rm -r compiler_gnu_linux &&\
 \
 # Hack for docs - Jekyll ignores files/directories with "_" prefix. But docs built by Sphinx may contain such directories. So, disable inspection of the docs directory by Jekyll by creating special marker file.
-touch docs/.nojekyll
+touch docs/.nojekyll &&\
+touch docs/ru/.nojekyll &&\
+touch docs/ru/_static/.nojekyll

@@ -1,5 +1,6 @@
 baseurl: /U-00DC-Sprache-site
 title: Ü Programming Language
 remote_theme: pages-themes/slate@v0.2.0
+include: ['docs/ru/_static/']
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
