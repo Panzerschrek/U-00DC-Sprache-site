@@ -55,6 +55,8 @@ jobs:
           if_no_artifact_found: fail
       - name: Unpack external resources
         run: ./unpack_external_resources.sh
+      - name: Prepare docs
+        run: ./unpack_docs.sh
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Build with Jekyll
@@ -62,9 +64,6 @@ jobs:
         with:
           source: ./
           destination: ./_site
-      # Unpack the docs after Jekyll invocation in order to simple copy contents into "_site" directory.
-      - name: Prepare docs
-        run: ./unpack_docs.sh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
 
