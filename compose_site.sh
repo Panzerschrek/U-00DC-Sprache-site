@@ -2,7 +2,7 @@
 
 # Copy generated files into result directory.
 # Doing so we bypass access rights issues of original generated directory (it seems to be read-only).
-cp _site_generated _site &&\
+cp -r _site_generated _site &&\
 \
 # Extract docs into result directory.
 unzip compiler_gnu_linux.zip -d compiler_gnu_linux &&\
