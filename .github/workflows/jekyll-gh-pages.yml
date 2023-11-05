@@ -62,6 +62,9 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      # Unpack the docs after Jekyll invocation in order to simple copy contents into "_site" directory.
+      - name: Prepare docs
+        run: ./unpack_docs.sh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
 
