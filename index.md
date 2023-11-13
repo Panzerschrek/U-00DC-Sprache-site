@@ -19,10 +19,10 @@ There are two compilers of Ü - Compiler0, written in C++ and Compiler1 - writte
 
 ### Documentation
 
-Documentation (russian) is available [here](https://panzerschrek.github.io/U-00DC-Sprache-site/docs/ru/contents.html).
+Documentation is available here: [russian](https://panzerschrek.github.io/U-00DC-Sprache-site/docs/ru/contents.html), [english](https://panzerschrek.github.io/U-00DC-Sprache-site/docs/en/contents.html).
 
-Unfortunately this is it (for now).
-But you can help writing documentation for other languages.
+For now only documentation for the language itself exists, but not for the standard library or for the compiler.
+But you can help extending it or writing documentation for other languages.
 
 
 ###  Development readiness
