@@ -332,7 +332,7 @@ As it can be seen, the optimization have reduced the memory block size by 32 byt
 ### Conclusion
 
 
-Now it's possible to write async code in Ü, much like in another languages with async/await support.
+Now it's possible to write async code in Ü, much like in another languages with async/await support (like Rust).
 
 However for now there is only language support for async programming.
 It's also needed to have async networking/files code and some async functions executor in order to write effective async programs.
