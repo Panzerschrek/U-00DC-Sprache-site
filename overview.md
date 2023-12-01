@@ -214,3 +214,9 @@ Together with `constexpr` evaluation it allows to write template code with diffe
 Ü supports namespaces like in C++
 Namespaces may be used in different files, they may be opened and closed multiple times, nested namespaces are possible.
 Mechanism of namespaces allows to structure code independent on project files structure.
+
+
+### Async functions
+
+Ü has async/await mechanism like many other programming languages have.
+Since Ü is relatively fast, it allows to write effective concurrent programs for networking (and not only), with large throughput and good CPU utilization.
