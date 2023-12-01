@@ -45,6 +45,10 @@ It is not so hard to write your own syntax highlighting file if there is no such
 There is also a converter of C headers, that may help in creation of C bindings.
 It is especially helpful until Ü has no big ecosystem of native (written in Ü) libraries.
 
+For now there is no any Ü-specific build system.
+But it's possible to build Ü programs with CMake (via custom commands) and perhaps via _make_.
+
+Also Ü have no package management system and/or package repositories.
 
 ### Links
 
