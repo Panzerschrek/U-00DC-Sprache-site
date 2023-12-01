@@ -230,8 +230,7 @@ fn async nomangle Mul34Add5( i32 x ) : i32
 }
 ```
 
-<details>
-<summary>IR code without inlining (O2)</summary>
+IR code without inlining (O2):
 ```
 define internal fastcc void @Mul34Add5.resume(ptr noalias nocapture nonnull align 8 dereferenceable(64) %coro_handle) #0 {
 resume.entry:
@@ -294,10 +293,8 @@ AfterCoroSuspend13:                               ; preds = %_Z5Mul34i.resume.ex
   br label %CoroEnd
 }
 ```
-</details>
 
-<details>
-<summary>IR code with inlining (O2)</summary>
+IR code with inlining (O2):
 ```
 define internal fastcc void @Mul34Add5.resume(ptr noalias nocapture nonnull align 8 dereferenceable(32) %coro_handle) #3 {
 resume.entry:
@@ -324,7 +321,6 @@ AfterCoroSuspend34:                               ; preds = %resume.entry
   br label %CoroEnd
 }
 ```
-</details>
 
 As it can be seen, the optimization have reduced the memory block size by 32 bytes, unnecessary control flow instructions and load/store instructions were removed.
 
