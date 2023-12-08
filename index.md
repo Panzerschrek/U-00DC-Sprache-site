@@ -24,6 +24,7 @@ Documentation is available here: [russian](https://panzerschrek.github.io/U-00DC
 For now only documentation for the language itself exists, but not for the standard library or for the compiler.
 But you can help extending it or writing documentation for other languages.
 
+There are also some basic usage examples of different language features, available [here](https://github.com/Panzerschrek/U-00DC-Sprache/tree/master/source/examples).
 
 ###  Development readiness
 
