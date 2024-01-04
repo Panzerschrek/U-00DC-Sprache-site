@@ -40,7 +40,7 @@ But there is no yet any functionality for system interaction (time, files, netwo
 Ü includes also a language server that helps a lot during development.
 It can be used with any IDE that supports the Language Server Protocol.
 
-Ü project includes syntax highlighting rules for some text editors/IDE.
+Ü project includes syntax highlighting rules for some text editors/IDEs.
 It is not so hard to write your own syntax highlighting file if there is no such file for your IDE/text editor yet.
 
 There is also a converter of C headers, that may help in creation of C bindings.
@@ -73,4 +73,4 @@ See more information in the project repository.
 
 ### Authors
 
-Copyright © 2016-2023 "Panzerscrek".
+Copyright © 2016-2024 "Panzerscrek".
