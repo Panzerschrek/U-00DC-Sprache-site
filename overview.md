@@ -20,7 +20,7 @@ It is based on LLVM library and thus uses whole LLVM infrastructure.
 
 ### Context-free syntax
 
-Syntax of Ü is context-free, that simplifies compiler development and makes code more readable.
+The syntax of Ü is context-free, that simplifies compiler development and makes code more readable.
 
 
 ### Order-independent top level definitions
@@ -31,9 +31,9 @@ Thus reverse definitions order (like in C) and (sometimes) prototypes usage may 
 
 ### Imports model
 
-"import" in Ü means compilation of specified file and logical merging of the result into current compilation unit.
-All imported files are compiled independently on each other, rather than merging file contents together and compiling this "as is", as does (for example) C++ compiler.
-All contents of imported files considered to be inline - no special "inline" keyword is required.
+`import` in Ü means compilation of a specified file and logical merging of the result into current compilation unit.
+All imported files are compiled independently on each other, rather than merging file contents together and compiling this "as is", as (for example) C++ compiler does.
+All contents of imported files considered to be inline - no special `inline` keyword is required.
 
 It is important to mention that imports in Ü are designed for usage of separate header/implementation files.
 It is recommended to do such, but it still possible to use "header-only" files.
@@ -49,7 +49,7 @@ Types for variables may be specified, but it is possible to avoid type specifyin
 There are also a couple of constructions where it is unnecessary to specify types, but mostly they must be specified.
 
 There is no complex type calculation mechanisms.
-That significantly simplifies compiler and improves readability.
+That significantly simplifies compiler and improves code readability.
 
 
 ### Static strong typing
@@ -66,13 +66,13 @@ With any other kind of type system it is almost impossible to write reliable err
 
 ### Memory safety
 
-Ü features clever mechanism named "reference checking", that ensures memory correctness during compilation.
+Ü features clever mechanism named *reference checking*, that ensures memory correctness during compilation.
 If code is incorrect, compilation fails with an error.
 If compilation succeeded, result program should not contain any memory errors, like use after free, out of bounds access, etc.
 
 It is still possible to shot the leg via `unsafe` blocks/expressions/functions, but it is strongly recommended to use `unsafe` as little as possible.
 
-Same mechanism that ensures memory safety may be used to ensure thread safety.
+The same mechanism that ensures memory safety may be also used to ensure thread safety.
 
 There are of course some disadvantages of this mechanism.
 A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
@@ -84,7 +84,7 @@ But it most cases usage of `unsafe` is rarely needed - mostly for interaction wi
 
 Each fundamental type variable/field should be initialized.
 This prevents bugs caused by unitialized memory reads.
-User types initialization is also required, but it may be omitted if user type has default constructor.
+User types initialization is also required, but it may be omitted if a user type has default constructor.
 
 
 ### Simple reference model
@@ -92,7 +92,7 @@ User types initialization is also required, but it may be omitted if user type h
 Ü has support of reference-variables, fields, function parameters and return values.
 Usage of references is simple - there is no need for manual/boilerplate take reference/dereference operators, like for C pointers or Rust references.
 It is much like in C++.
-But for code simplicity references are not part of the type system, rather than a part of variable/field declarations, function signatures.
+But for code simplicity references are not a part of the type system, rather than a part of variable/field declarations, function signatures.
 
 
 ### Assignment/copying model
@@ -101,7 +101,7 @@ But for code simplicity references are not part of the type system, rather than 
 There is no need to call something like `clone` to create copy of a value.
 
 But Ü is still effective and allows to avoid unnecessary copying.
-Temporary values are effectively moved, named values may be moved manually via `move` operator.
+Temporary values are effectively moved, named variables may be moved manually via `move` operator.
 
 
 ### No memory-dependent objects
@@ -121,7 +121,7 @@ This  seems to be more elegant way of initialization, compared to factory functi
 ### Destructors
 
 One of the most important features of Ü is usage of destructors.
-`destructor` is a special method this is automatically called for a variable at its lifetime end.
+`destructor` is a special method which is automatically called for a variable at its lifetime end.
 
 Usage of destructors allows to implement robust and safe memory and resource management without relying on slow and complex garbage collection schemes.
 
@@ -182,7 +182,7 @@ It is similar to C++, but is stronger, that allows to avoid some mistakes.
 
 Inheritance in Ü uses zero or one base and zero or many interfaces model.
 
-Inheritance is enabled only if necessary - if class has ancestors or is defined as polymorph.
+Inheritance is enabled only if necessary - if a class has ancestors or is defined as polymorph.
 This allows for most classes not to be polymorph and thus avoid polymorhpism overhead (for virtual table pointers, for example) where it is not necessary.
 
 

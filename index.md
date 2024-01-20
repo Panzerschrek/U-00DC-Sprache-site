@@ -73,4 +73,4 @@ See more information in the project repository.
 
 ### Authors
 
-Copyright © 2016-2024 "Panzerscrek".
+Copyright © 2016-2024 "Panzerschrek".
