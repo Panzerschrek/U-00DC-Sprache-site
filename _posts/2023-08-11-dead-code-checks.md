@@ -22,7 +22,7 @@ Dead code itself is not so bad, but its presence may indicate, that something is
 
 ### Useless expressions detection
 
-One of possible function/block body elements is a simple expression element.
+One of possible function/block body elements is the simple expression element.
 It is designed primary for cases, like calling functions with side-effects.
 But syntactically nobody prevents a programmer to use other kinds of expressions but function calls.
 
@@ -68,7 +68,7 @@ SomeFunction(); // Ok - call function.
 ### Unused names detection
 
 Detecting unused names is important too.
-Unused code may indicate that something in a program is wrong - for example programmer forgot to use a variable or forgot to remove it during a refactoring.
+Unused code may indicate that something in a program is wrong - for example a programmer forgot to use a variable or forgot to remove it during a refactoring.
 
 So, i implemented some kind of unused names detection in Ü.
 Internally there are two kinds of checks - for local (function scope) names and other (global) names.
@@ -98,7 +98,7 @@ It is needed, since presence of such methods affects some important class proper
 `nomangle` functions and functions with prototype in one of imported files are considered used.
 For now all virtual functions considered to be used, but only because it is hard to perform usage check for them.
 
-Class fields are considered unused, if they are referenced outside initialization code.
+Class fields are considered used, if they are referenced outside initialization code.
 If a field is initialized inside member access operator and/or inside class constructor initialization list, but not used later - an error for it will be generated.
 
 

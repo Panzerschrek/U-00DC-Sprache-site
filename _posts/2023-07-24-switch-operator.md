@@ -52,7 +52,7 @@ Later i will explain why.
 
 ### Implementation
 
-So, simple `switch` operator in Ü looks like this:
+So, a simple `switch` operator in Ü looks like this:
 
 ```
 switch(x)
@@ -104,7 +104,7 @@ They exist only as extensions in some compilers (like GCC).
 ### The Main Feature
 
 Ok great, `switch` in Ü is pretty flexible.
-But this is not a main feature of the `switch` operator.
+But this is not the main feature of the `switch` operator.
 There is something else.
 
 The `switch` operator has though some limitations.
@@ -168,7 +168,7 @@ fn Foo( i32 x ) : i32
     switch(x)
     {
         5-> { return 1; },
-        3 + 2 -> { return 2; }, // Error, label value `3 + 2` is equal to value of other label `5`.
+        3 + 2 -> { return 2; }, // Error, label value "3 + 2" is equal to value of other label "5".
         10 ... 20 -> { return 3; },
         19 ... 1000 -> { return 4; }, // Error, this range overlaps with previous one.
         default -> { return 0; },
@@ -181,7 +181,7 @@ fn Foo( i32 x ) : i32
 So, why exactly `switch` in Ü has such checks?
 The main reason for that is code safety.
 It is better to perform code static checks during compilation instead of spending time debugging/testing it.
-If it is possible, programmer can use `switch` and get all its checks.
+If it is possible, a programmer can use `switch` and get all its checks.
 If not - it is still possible to use chain of `if-else`.
 
 Especially useful are static checks for enums.
@@ -204,7 +204,7 @@ fn Foo( E e ) : i32
 ```
 
 All works, all are happy.
-But one day declaration of the enum changes - new values are added:
+But one day the declaration of the enum changes - new values are added:
 
 ```
 enum E{ Before, A, B, C, AfterC }
@@ -237,7 +237,7 @@ fn Foo( E e ) : i32
 ```
 
 Alternatively it is possible to add a `default` branch.
-But such solution may not be safe, since after another enum values will be introduced no new compilation errors will be generated and it may be not so easy to find places in code needed to be changed.
+But such solution may not be good, since after another enum values will be introduced no new compilation errors will be generated and it may be not so easy to find places in code needed to be changed.
 
 Ü is not unique with such static checks.
 Some modern C++ compilers can also complain about unhandled enum values in `switch`.

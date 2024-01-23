@@ -28,9 +28,9 @@ Two coroutine functions may return a coroutine object of the same type, if all t
 There is an operator `if_coro_advance`, which resumes coroutine execution and may return its result.
 
 
-### Changes made for async function
+### Changes made for async functions
 
-Async function are one kind of coroutines.
+Async functions are one kind of coroutines.
 They can pause their execution and resume it later (as any other coroutine).
 When they finish execution, they produce single result, unlike generators, which produce a result after each pause.
 
@@ -177,7 +177,7 @@ When resuming a coroutine, `switch` IR instruction is used to pass control flow 
 
 For async functions it's common to have deep call stacks.
 Assume now, that an async function with deep 10 wants to yield.
-It does so, its caller with deap 9 does also `yield` in `await` operator, and its caller with deap 8 does also so, etc., until the start of the async call stack.
+It does so, its caller with depth 9 does also `yield` in `await` operator, and its caller with depth 8 does also so, etc., until the start of the async call stack.
 Now when a root coroutine needs to be resumed, this call stack must be traversed again, with `switch` for each async function in the stack.
 
 Such chain of switches makes work with async functions non-optimal, it contains a lot of switches instead of single jump instruction, as it may be in the optimal case.
@@ -200,7 +200,7 @@ Promise value of an inlined function is directly used instead of calling _llvm.c
 Jumps to _coro_cleanup_ blocks of an inlined function are replaced with jumps to destroy block of an `await` operator of the destination function, in order to call destructors of an inlined function properly.
 Jumps to _coro_suspend_final_ are replaced with jump to _await_done_ block.
 Await loop is removed entirely.
-Also any instructions related to the original coroutine object of an inlined function is removed.
+Also any instructions related to the original coroutine object of an inlined function are removed.
 Allocations blocks of an inlined function are prepended to the allocation blocks of the destination function.
 
 The inlining process described above deals fine with async calls forming acyclic graph.
@@ -211,8 +211,8 @@ There are of course some disadvantages of such force-inlining.
 Inlining may increase code size if async functions contain a lot of code that does something non-trivial rather than calling other async and non-async functons.
 
 But it seems like benefits are greater than disadvantages.
-Especially it works great for cases, where an async function contains just single "await" call to another async function with some args preparation and result processing.
-Another common case - with several sequential "await" calls, also works good.
+Especially it works great for cases, where an async function contains just single `await` call to another async function with some args preparation and result processing.
+Another common case - with several sequential `await` calls, also works good.
 
 An example of inlining:
 

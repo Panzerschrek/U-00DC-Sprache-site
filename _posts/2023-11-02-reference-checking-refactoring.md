@@ -60,7 +60,7 @@ Fundamental types, enums, raw pointers have 0 reference tags.
 Structs/classes may have 0 or more tags.
 Tuples have number of tags equal to sum of all tags of element types.
 
-In order to perform proper mapping of logical reference tags to reference fields of structs, special reference notation for fields were introduced.
+In order to perform proper mapping of logical reference tags to reference fields of structs, special reference notation for fields was introduced.
 Reference class field may be annotated with a constant expression in `@()` after reference modifier.
 Constant expression is expected to be a `char8` with values in range ["a"; "z"].
 Each letter means corresponding tag number ("a" - 0, "b" - 1, "c" - 2, etc.).
