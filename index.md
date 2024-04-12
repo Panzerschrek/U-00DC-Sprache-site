@@ -60,6 +60,8 @@ Contributions are welcome!
 
 [Web Demo](/web_demo.md)
 
+[ProgrammingLanguages Discord channel](https://discord.com/channels/530598289813536771/1227680274045997176)
+
 
 ### Compiler downloads
 
