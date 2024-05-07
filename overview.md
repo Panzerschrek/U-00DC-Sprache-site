@@ -209,6 +209,13 @@ A function may be marked as `constexpr` if it uses a safe and deterministic subs
 Together with `constexpr` evaluation it allows to write template code with different behavior specially designed/optimized for different types/type kinds.
 
 
+### Mixins as ultimate metaprogramming solution
+
+Ü provides arbitrary compile-time code generation - via mixin strings.
+This allows to generate any Ü code in compilation time and thus almost eliminates need for any external code generation tools/scripts.
+Some code, impossible with templates is possible to generate using mixins.
+
+
 ### Code structuring via namespaces
 
 Ü supports namespaces like in C++
