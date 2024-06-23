@@ -227,3 +227,11 @@ Mechanism of namespaces allows to structure code independent on project files st
 
 Ü has async/await mechanism like many other programming languages have.
 Since Ü is relatively fast, it allows to write effective concurrent programs for networking (and not only), with large throughput and good CPU utilization.
+
+
+### Lambdas
+
+Ü supports anonymous functions with context capturing.
+They are named lambdas.
+They are useful together with usage of functions/algorithms accepting a function-like object.
+It's much easier to pass a lambda, rather than creating a separate class with overloaded `()` operator for only single use.
