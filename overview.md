@@ -11,7 +11,7 @@ This article contains a short overview of most important Ü features.
 ### Compilation into machine code
 
 Good performance is achievable only via compilation into native code.
-Interpretation or virtual machine is too slow.
+Interpretation or virtual machine (even with JIT) is too slow.
 Because of that Ü targets machine code.
 
 It is based on LLVM library and thus uses whole LLVM infrastructure.
@@ -49,7 +49,7 @@ Types for variables may be specified, but it is possible to avoid type specifyin
 There are also a couple of constructions where it is unnecessary to specify types, but mostly they must be specified.
 
 There is no complex type calculation mechanisms.
-That significantly simplifies compiler and improves code readability.
+This significantly simplifies compiler and improves code readability.
 
 
 ### Static strong typing
@@ -77,13 +77,13 @@ The same mechanism that ensures memory safety may be also used to ensure thread 
 There are of course some disadvantages of this mechanism.
 A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
 Some (uncommon) code patterns are not (effectively) achievable in Ü without usage of `unsafe`.
-But it most cases usage of `unsafe` is rarely needed - mostly for interaction with foreign code.
+But in most cases usage of `unsafe` is rarely needed - mostly for interaction with foreign code.
 
 
 ### Mandatory initialization
 
 Each fundamental type variable/field should be initialized.
-This prevents bugs caused by unitialized memory reads.
+This prevents bugs caused by uninitialized memory reads.
 User types initialization is also required, but it may be omitted if a user type has default constructor.
 
 
@@ -115,7 +115,7 @@ In terms of C++ this means that no non-trivially-relocable types are allowed.
 
 Ü supports a special structure/class methods named `constructor`, that are called during initialization.
 Usage of constructors is almost like in C++.
-This  seems to be more elegant way of initialization, compared to factory functions like in Rust.
+This seems to be more elegant way of initialization, compared to factory functions like in Rust.
 
 
 ### Destructors
@@ -167,8 +167,8 @@ These type kinds are sufficient to express any other complex data structures.
 
 Important feature of Ü templates is Duck-typing.
 There are no traits/type requirements in templates.
-If a template performs some operation over given type (operator, copying, method call) code compiles if given type supports such operations and doesn't compiles - if not.
-Such system requires less boilerplate for both template autos and template users.
+If a template performs some operation over given type (operator, copying, method call) code compiles if given type supports such operations and doesn't compile - if not.
+Such system requires less boilerplate for both template authors and template users.
 
 There are some drawbacks of this scheme, like no errors check for non-instantiated templates.
 But it seems to be not so important.
