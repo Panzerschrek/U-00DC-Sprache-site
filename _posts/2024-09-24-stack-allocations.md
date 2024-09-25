@@ -19,7 +19,7 @@ After a function finishes, all allocations made with `alloca` are freed just by 
 C99 has a better version of this feature.
 It allows to declare stack arrays with size determined in runtime (so-called variable-length arrays).
 It works similar to manual usage of `alloca` function, but is slightly better.
-C Compiler can free allocated memory for such variable-length array when it goes out of scope.
+C compiler can free allocated memory for such variable-length array when it goes out of scope.
 This allows, for example, to use such arrays in loops, which isn't practical with `alloca`.
 Sadly this feature is still missing in some C compilers, like MSVC.
 
@@ -28,7 +28,7 @@ Constructors and destructors for elements of such arrays are called properly, bu
 But this behavior is non-standard in C++.
 
 
-### Elephant in the room
+### The elephant in the room
 
 So, if this feature is so useful, why isn't it a part the modern C++ standards, like C++23?
 There are some problems with it.
@@ -41,7 +41,7 @@ They use stack allocation and stack size is usually very limited, like 1MB defau
 So, it's possible to cause stack overflow and thus program crash by using stack-allocated arrays.
 
 MSVC tries to solve the stack overflow problem by introduction of the `_malloca` function.
-It's similar to `alloca`, but allocates memory from heap for large block sizes (typically 1kb or more).
+It's similar to `alloca`, but allocates memory from heap for large block sizes (typically 1KB or more).
 But it's not so easy to use as `alloca` - it requires manually calling `_freea` function to free potential heap allocation.
 
 Because of problems mentioned above some alternative approaches to variable-length arrays are used in standard C++.
@@ -81,7 +81,7 @@ Also it calls destructors (if necessary), because Compiler can't do this properl
 
 Lastly I added a macro `scoped_array`, which combines `alloca` operator call and `array_over_external_memory` container instance creation (and wraps unsafe calls).
 
-After this was done I managed to use `scoped_array` in some places in Ü code.
+After this was done I managed to use `scoped_array` in some places in Compiler1 code (written in Ü).
 
 
 ### Current approach
@@ -107,12 +107,12 @@ After destructors for variables of a scope block were called, allocations made b
 For stack allocation I used `llvm.stacksave` and `llvm.stackrestore` intrinsics to free memory block allocated, which are translated to stack pointer register reading and restoring.
 
 This change allowed me to remove the mentioned above no-allocation-in-loop limitation.
-Additionally result machine code became much cleaner - allocation cleanup code is now executed only where it is necessary.
+Additionally result machine code became much cleaner - allocation cleanup code is now executed only where it's necessary.
 
-I updated `scoped_array` macro for usage of the `alloca` declaration instead of `alloca` operator and deleted `alloca` operator code.
+I updated `scoped_array` macro to usage of the `alloca` declaration instead of the `alloca` operator and deleted this operator code completely.
 
 
-### End user experience
+### Programmer's experience
 
 Regardless of compiler/standard library complexity for this feature support such (potentially) stack-allocated arrays are easy to use for a programmer.
 Examples:
