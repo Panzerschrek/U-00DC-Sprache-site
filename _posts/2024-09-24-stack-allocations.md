@@ -13,7 +13,7 @@ Usually this size is small, but can sometimes require a lot of space, so, alloca
 
 Already in old versions of C language there was a built-in function named `alloca`.
 This function allocates a memory block on current stack frame.
-This allocation is as cheap as possible - it requires only adjusting value in the stack pointer register.
+This allocation is as cheap as it can be - it requires only adjusting value in the stack pointer register.
 After a function finishes, all allocations made with `alloca` are freed just by restoring this stack pointer to previous value.
 
 C99 has a better version of this feature.
@@ -34,7 +34,7 @@ So, if this feature is so useful, why isn't it a part the modern C++ standards, 
 There are some problems with it.
 
 First, in context of C++ such arrays are very limited because of restricted construction.
-There is no easy way to use anything except of default constructor.
+There is no easy way to use anything except default constructor.
 
 Second, such arrays are very error-prone.
 They use stack allocation and stack size is usually very limited, like 1MB default size on Windows or 8MB on Linux.
@@ -44,7 +44,7 @@ MSVC tries to solve the stack overflow problem by introduction of the `_malloca`
 It's similar to `alloca`, but allocates memory from heap for large block sizes (typically 1kb or more).
 But it's not so easy to use as `alloca` - it requires manually calling `_freea` function to free potential heap allocation.
 
-Instead of problems mentioned above some alternative approaches are used in C++.
+Because of problems mentioned above some alternative approaches to variable-length arrays are used in standard C++.
 The easiest solution is to use `std::vector`, which uses heap allocation and thus is not limited to stack size.
 But it isn't fast for small allocations, since heap allocations are usually costly.
 A more advanced approach is to use some fixed buffer and heap fallback if it's not enough (like `llvm::SmallVector` does).
@@ -52,7 +52,7 @@ A more advanced approach is to use some fixed buffer and heap fallback if it's n
 
 ### Ü implementation - first approach
 
-I decided to implement support of stack arrays in Ü, but do this wisely.
+I decided to implement support of stack arrays in Ü, but to do this wisely.
 
 I found that it's too complicated to perform proper variable-sized array initialization via all possible variants in the compiler itself.
 Instead I decided to split this feature into two parts.
@@ -77,6 +77,7 @@ It's an owned wrapper for a memory block, which is (partially) similar to `ust::
 Also it's unsafe to construct it, sine a programmer should guarantee that the memory block provided live long enough.
 Internally this container contains just a pointer to memory block and number of elements.
 It allows construction of an array of N elements over this block - using default constructor, filler value or an iterator.
+Also it calls destructors (if necessary), because Compiler can't do this properly.
 
 Lastly I added a macro `scoped_array`, which combines `alloca` operator call and `array_over_external_memory` container instance creation (and wraps unsafe calls).
 
@@ -86,23 +87,24 @@ After this was done I managed to use `scoped_array` in some places in Ü code.
 ### Current approach
 
 However the first approach wasn't so great and had some limitations.
-It wasn't possible to call `alloca` in a loop, since allocated memory was freed only when function exits and thus using `alloca` in loop may lead to easy stack overflow.
+It wasn't possible to call `alloca` in a loop, since allocated memory was freed only when function exits and thus using `alloca` in a loop may lead to easy stack overflow.
 
 Implementing a heap-allocation fallback for large blocks size was also tricky.
-It was necessary to check if an allocation pointer needs to be freed at function and, even if potential `alloca` was conditional (inside a branch of `if` operator).
+It was necessary to check if an allocation pointer needs to be freed at the function and, even if potential `alloca` was conditional (inside a branch of `if` operator).
 
-So, I decided to remove these disadvantages and make this feature much better.
+So, I decided to find a better approach - without these disadvantages.
 
 Instead of `alloca` operator I introduced `alloca` declaration - a construction, which performs allocation and declares a raw pointer type variable to hold its result.
 It looks like this:
 ```
-// Allocate space for "some_size" elements of "i32" type and create stack variable with name "ptr" holding the address of memory block allocated.
+// Allocate space for "some_size" elements of "i32" type and
+// create stack variable with name "ptr" holding the address of memory block allocated.
 alloca i32 ptr[some_size];
 ```
 
 Doing so allowed me to track this allocation lifetime - attach it to the surrounding block.
 After destructors for variables of a scope block were called, allocations made by such `alloca` declarations may be freed too - both for stack allocation and heap fallback.
-For stack allocation I used `llvm.stacsave` and `llvm.stackrestore` instructions to free memory block allocated, which are translated to stack pointer register reading and restoring.
+For stack allocation I used `llvm.stacksave` and `llvm.stackrestore` intrinsics to free memory block allocated, which are translated to stack pointer register reading and restoring.
 
 This change allowed me to remove the mentioned above no-allocation-in-loop limitation.
 Additionally result machine code became much cleaner - allocation cleanup code is now executed only where it is necessary.
@@ -120,7 +122,8 @@ scoped_array i32 mut ints[ GetSize() ]( 0 );
 ```
 ```
 var ust::vector</i32/> ints;
-// Declare an immutable scoped array of "ust::optional</i32/>" elements and initialize it using an iterator.
+// Declare an immutable scoped array of "ust::optional</i32/>" elements
+// and initialize it using an iterator.
 scoped_array ust::optional</i32/> optional_ints[ ints.size() ]( ints.iter() );
 ```
 
@@ -189,7 +192,7 @@ Foo:
 	movq	%r14, %rsp ; Restore stack pointer via llvm.stackrestore
 	jmp	.LBB0_6
 .LBB0_5:
-	; Heap allocated free block
+	; Heap allocation free block
 	movq	%r14, %rdi
 	callq	free@PLT
 .LBB0_6:
@@ -200,4 +203,4 @@ Foo:
 	retq
 ```
 
-But even with such slightly suboptimal code (2 more instructions) it's still better to use stack allocations compared to unconditional heap usage.
+But even with such slightly suboptimal code (2 more instructions than needed) it's still better to use stack allocations compared to unconditional heap usage.
