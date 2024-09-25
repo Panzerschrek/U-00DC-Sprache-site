@@ -2,6 +2,8 @@
 title:  Auto-move in return
 ---
 
+## Auto-move in return
+
 ### Motivation
 
 In the Compiler1 code it was usual to write code like this:

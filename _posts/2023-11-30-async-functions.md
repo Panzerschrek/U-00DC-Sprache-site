@@ -2,6 +2,8 @@
 title:  Async functions
 ---
 
+## Async functions
+
 Recently i added async functions support in Ü.
 In this article i want do describe how i did it and how async functions in Ü work.
 

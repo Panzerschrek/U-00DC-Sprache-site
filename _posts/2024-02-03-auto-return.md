@@ -2,6 +2,8 @@
 title:  Auto return type functions
 ---
 
+## Auto return type functions
+
 ### Introduction
 
 A long time ago ( in year 2019 ) I added an experimental feature - return type of some functions may be marked as `auto`.

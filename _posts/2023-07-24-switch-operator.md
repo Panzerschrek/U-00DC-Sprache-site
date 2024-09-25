@@ -2,6 +2,8 @@
 title:  Switch Operator
 ---
 
+## Switch Operator
+
 ### Motivation
 
 Sometimes it is necessary to compare some value against fixed set of other values and execute some code, specific for each value.

@@ -1,6 +1,8 @@
 ---
-title:  Stack allocations
+title:  Dynamic stack allocations
 ---
+
+## Dynamic stack allocations
 
 ### Motivation
 

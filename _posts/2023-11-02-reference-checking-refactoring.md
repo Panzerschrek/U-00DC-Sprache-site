@@ -2,6 +2,8 @@
 title:  Reference checking refactoring
 ---
 
+## Reference checking refactoring
+
 ### Introduction
 
 Reference checking in Ü is a mechanism, that statically ensures absence of memory-related errors, like use after free, use after move, data races, etc.
