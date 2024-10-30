@@ -70,7 +70,7 @@ Second idea - limit types of reference fields and allow only single reference ta
 First I thought changes described above are relatively easy.
 Supporting second order inner references requires adding extra compiler work to setup inner references of reference fields when accessing them.
 Also it requires some additional checks in functions call code.
-Lastly structs preparation code should be modified.
+Lastly, structs preparation code should be modified.
 
 But in practice it was a little bit more tedious.
 There are edge cases in reference notation violation checking - to handle cases where second order reference is returned or linked.
@@ -81,7 +81,7 @@ Lastly, `byval mut` lambdas should be treated a little bit specially, since thei
 ### Reference notation for second order references
 
 For now I decided (for simplicity) not to add reference notation for naming second order inner references in function signatures.
-This limitation doesn't allow to return second order inner references from functions - as a plain reference or as a reference inside a returned value.
+This limitation doesn't allow to return second order inner references from functions - as a plain reference or as a reference inside the returned value.
 
 The only exception is when a reference to inner reference tag of an argument is returned.
 Inner references of this result reference are (for now) assumed to refer to (possible) second order references of the corresponding function argument and its inner tag.
@@ -96,7 +96,7 @@ It's now fine to use iterator-based iteration for `vector` for an element type w
 The same is for `optional` container - it's possible to create `optional_ref` for it, even if its element type contains references inside.
 
 Lambdas are now sometimes easy to use.
-In a couple of places in Compiler1 I needed to specify captured in lambdas variables one-by-one - in order to specify capturing by reference for some variables, and capturing by value of variables with reference inside.
+For example, in a couple of places in Compiler1 I needed to specify captured in lambdas variables one-by-one - in order to specify capturing by reference for some variables, and capturing by value of variables with reference inside.
 Now this isn't necessary - I can just specify capturing all by reference (`[&]`).
 
 Before:
@@ -110,10 +110,10 @@ lambda[&]( CodeBuilder &mut self, FunctionContext &mut function_context )
 
 Some code is though still impossible.
 Like `vector::from_iterator` method can't be implemented for a contained type with references inside, since returning result of this method requires returning second order reference inside it.
-Creating something like `optional_ref` is still impossible for a type with more than one inner reference tag inside, but this limitation may be (sometimes) avoided by creating a wrapper class which collapses inner reference tags into one tag.
+Creating something like `optional_ref` is still impossible for a type with more than one inner reference tag inside, but this limitation may be (sometimes) avoided by creating a wrapper class which collapses inner reference tags into single tag.
 
 
-### Further work
+### Further improvements
 
 It may be still possible to implement function reference notation for second order references.
 But I don't know how to do this properly in order to avoid mistakes and unnecessary complexity.
