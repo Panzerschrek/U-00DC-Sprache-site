@@ -70,7 +70,7 @@ Second idea - limit types of reference fields and allow only single reference ta
 First I thought changes described above are relatively easy.
 Supporting second order inner references requires adding extra compiler work to setup inner references of reference fields when accessing them.
 Also it requires some additional checks in functions call code.
-Lastly, structs preparation code should be modified.
+Lastly, structs preparation code should be modified, in order to handle second order inner reference kinds.
 
 But in practice it was a little bit more tedious.
 There are edge cases in reference notation violation checking - to handle cases where second order reference is returned or linked.
@@ -92,20 +92,26 @@ This exception is for now enforced both in call code and in function return refe
 
 After this change some code is now possible, what wasn't possible before.
 
-It's now fine to use iterator-based iteration for `vector` for an element type with references inside.
-The same is for `optional` container - it's possible to create `optional_ref` for it, even if its element type contains references inside.
+It's now fine to use iterator-based iteration for `vector` for a element types with references inside.
+The same is for the `optional` container - it's possible to create `optional_ref` for it, even if its element type contains references inside.
 
-Lambdas are now sometimes easy to use.
+Lambdas are now sometimes easier to use.
 For example, in a couple of places in Compiler1 I needed to specify captured in lambdas variables one-by-one - in order to specify capturing by reference for some variables, and capturing by value of variables with reference inside.
 Now this isn't necessary - I can just specify capturing all by reference (`[&]`).
 
 Before:
 ```
 lambda[synt_args, &names_scope, &args, &src_loc]( CodeBuilder &mut self, FunctionContext &mut function_context )
+{
+    // ...
+}
 ```
 After:
 ```
 lambda[&]( CodeBuilder &mut self, FunctionContext &mut function_context )
+{
+    // ...
+}
 ```
 
 Some code is though still impossible.
