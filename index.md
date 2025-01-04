@@ -26,7 +26,7 @@ But you can help extending it or writing documentation for other languages.
 
 There are also some basic usage examples of different language features, available [here](https://github.com/Panzerschrek/U-00DC-Sprache/tree/master/source/examples).
 
-###  Development readiness
+### Development readiness
 
 Ü as language is already pretty developed.
 It contains most features required for effective coding.
@@ -46,10 +46,10 @@ It is not so hard to write your own syntax highlighting file if there is no such
 There is also a converter of C headers, that may help in creation of C bindings.
 It is especially helpful until Ü has no big ecosystem of native (written in Ü) libraries.
 
-For now there is no any Ü-specific build system.
-But it's possible to build Ü programs with CMake (via custom commands) and perhaps via _make_.
+Ü has its own build system, which is currently in development.
+It simplifies building Ü programs consisting of many source files, libraries, executables, etc.
 
-Also Ü have no package management system and/or package repositories.
+Also Ü has no package management system and/or package repositories.
 
 ### Links
 
@@ -75,4 +75,4 @@ See more information in the project repository.
 
 ### Authors
 
-Copyright © 2016-2024 "Panzerschrek".
+Copyright © 2016-2025 "Panzerschrek".
