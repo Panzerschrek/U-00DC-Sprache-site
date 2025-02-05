@@ -39,7 +39,7 @@ It is important to mention that imports in Ü are designed for usage of separate
 It is recommended to do such, but it still possible to use "header-only" files.
 Import dependency loops are not possible.
 
-A model with preferred usage of "headers" may seem to be outdated, but in reality it forces to decouple interface from implementation details and improve readability of the interface part.
+The model with preferred usage of "headers" may seem to be outdated, but in reality it forces to decouple interface from implementation details and improves readability of the interface part.
 
 
 ### Straightforward types evaluation model
@@ -49,7 +49,7 @@ Types for variables may be specified, but it is possible to avoid type specifyin
 There are also a couple of constructions where it is unnecessary to specify types, but mostly they must be specified.
 
 There is no complex type calculation mechanisms.
-This significantly simplifies compiler and improves code readability.
+This improves code readability and significantly simplifies compiler.
 
 
 ### Static strong typing
@@ -72,7 +72,7 @@ If compilation succeeded, result program should not contain any memory errors, l
 
 It is still possible to shot the leg via `unsafe` blocks/expressions/functions, but it is strongly recommended to use `unsafe` as little as possible.
 
-The same mechanism that ensures memory safety may be also used to ensure thread safety.
+The same mechanism, that ensures memory safety, may be also used to ensure thread safety.
 
 There are of course some disadvantages of this mechanism.
 A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
@@ -108,12 +108,12 @@ Temporary values are effectively moved, named variables may be moved manually vi
 
 Objects in Ü have no specific defined memory location, as (for example) C++ requires.
 This allows to move objects effectively from one location to another and thus speed-up result code.
-In terms of C++ this means that no non-trivially-relocable types are allowed.
+In terms of C++ this means, that no non-trivially-relocable types are allowed.
 
 
 ### Constructors
 
-Ü supports a special structure/class methods named `constructor`, that are called during initialization.
+Ü supports a special structure/class methods named `constructor`, which are called during initialization.
 Usage of constructors is almost like in C++.
 This seems to be more elegant way of initialization, compared to factory functions like in Rust.
 
@@ -167,7 +167,7 @@ These type kinds are sufficient to express any other complex data structures.
 
 Important feature of Ü templates is Duck-typing.
 There are no traits/type requirements in templates.
-If a template performs some operation over given type (operator, copying, method call) code compiles if given type supports such operations and doesn't compile - if not.
+If a template performs some operation over given type (operator, copying, method call), code compiles, if given type supports such operations and doesn't compile - if not.
 Such system requires less boilerplate for both template authors and template users.
 
 There are some drawbacks of this scheme, like no errors check for non-instantiated templates.
@@ -183,7 +183,7 @@ It is similar to C++, but is stronger, that allows to avoid some mistakes.
 Inheritance in Ü uses zero or one base and zero or many interfaces model.
 
 Inheritance is enabled only if necessary - if a class has ancestors or is defined as polymorph.
-This allows for most classes not to be polymorph and thus avoid polymorhpism overhead (for virtual table pointers, for example) where it is not necessary.
+This allows for most classes not to be polymorph and thus to avoid polymorhpism overhead (for virtual table pointers, for example) where it is not necessary.
 
 
 ### No exceptions
@@ -213,7 +213,7 @@ Together with `constexpr` evaluation it allows to write template code with diffe
 
 Ü provides arbitrary compile-time code generation - via mixin strings.
 This allows to generate any Ü code in compilation time and thus almost eliminates need for any external code generation tools/scripts.
-Some code, impossible with templates is possible to generate using mixins.
+Some code, impossible with templates, is possible to generate using mixins.
 
 
 ### Code structuring via namespaces
@@ -232,6 +232,6 @@ Since Ü is relatively fast, it allows to write effective concurrent programs fo
 ### Lambdas
 
 Ü supports anonymous functions with context capturing.
-They are named lambdas.
+Such functions are named lambdas.
 They are useful together with usage of functions/algorithms accepting a function-like object.
 It's much easier to pass a lambda, rather than creating a separate class with overloaded `()` operator for only single use.
