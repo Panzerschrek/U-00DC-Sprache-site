@@ -36,21 +36,22 @@ It contains most features required for effective coding.
 The compiler is relatively stable and fast and may be used without problems.
 It can even compile itself (Compiler1 version, obviously).
 
-Ü has a small (for now) standard library with basic routines and containers (vector, optional, variant, etc.).
-But there is no yet any functionality for system interaction (time, files, network), for now C standard library functions may be used for this.
-
-Ü includes also a language server that helps a lot during development.
-It can be used with any IDE that supports the Language Server Protocol.
-
-Ü project includes syntax highlighting rules for some text editors/IDEs.
-It is not so hard to write your own syntax highlighting file, if there is no such file for your IDE/text editor yet.
-
-There is also a converter of C headers, that may help in creation of C bindings.
-It is especially helpful until Ü has no big ecosystem of native (written in Ü) libraries.
+Ü has its own standard library with basic routines and containers (vector, optional, variant, etc.).
+Also it contains basic functions for filesystem interaction.
+Time-related functionality, networking or other system-specific functions aren't implemented yet.
 
 Ü has its own build system.
 It simplifies building Ü programs consisting of many source files, libraries, executables, etc.
 Package management is supported, but for now there is no centralized packages repository.
+
+Ü includes also a language server, that helps a lot during development.
+It can be used with any IDE, that supports the Language Server Protocol.
+
+Ü project includes syntax highlighting rules for some text editors/IDEs.
+It's not so hard to write your own syntax highlighting file, if there is no such file for your IDE/text editor yet.
+
+There is also a converter of C headers, that may help in creation of C bindings.
+It's especially helpful until Ü has no big ecosystem of native (written in Ü) libraries.
 
 
 ### Links
