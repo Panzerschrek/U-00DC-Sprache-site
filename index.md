@@ -2,7 +2,7 @@
 
 Ü is a statically-typed compiled programming language.
 
-The main goal of the language is a safety, but not with cost of bad performance and/or verbosity.
+The main goal of the language i safety, but not at the cost of bad performance and/or verbosity.
 
 Read [overview](/overview.md) for more information.
 
@@ -62,8 +62,6 @@ Contributions are welcome!
 [Blog](/blog.md)
 
 [Web Demo](/web_demo.md)
-
-[ProgrammingLanguages Discord channel](https://discord.com/channels/530598289813536771/1227680274045997176)
 
 
 ### Compiler downloads
