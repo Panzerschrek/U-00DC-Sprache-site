@@ -21,6 +21,7 @@ It is based on LLVM library and thus uses whole LLVM infrastructure.
 ### Context-free syntax
 
 The syntax of Ü is context-free, that simplifies compiler development and makes code more readable.
+The only exception are macros, which allow to extend syntax in a limited way, but such macros depend only on their definition and not things like type system and other information not available at parsing stage.
 
 
 ### Order-independent top level definitions
@@ -72,7 +73,7 @@ If compilation succeeded, result program should not contain any memory errors, l
 
 It is still possible to shot the leg via `unsafe` blocks/expressions/functions, but it is strongly recommended to use `unsafe` as little as possible.
 
-The same mechanism, that ensures memory safety, may be also used to ensure thread safety.
+The same mechanism, that ensures memory safety, is also used to ensure thread safety.
 
 There are of course some disadvantages of this mechanism.
 A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
@@ -113,7 +114,7 @@ In terms of C++ this means, that no non-trivially-relocable types are allowed.
 
 ### Constructors
 
-Ü supports a special structure/class methods named `constructor`, which are called during initialization.
+Ü supports special structure/class methods named `constructor`, which are called during initialization.
 Usage of constructors is almost like in C++.
 This seems to be more elegant way of initialization, compared to factory functions like in Rust.
 
@@ -121,14 +122,14 @@ This seems to be more elegant way of initialization, compared to factory functio
 ### Destructors
 
 One of the most important features of Ü is usage of destructors.
-`destructor` is a special method which is automatically called for a variable at its lifetime end.
+A `destructor` is a special method which is automatically called for a variable at its lifetime end.
 
 Usage of destructors allows to implement robust and safe memory and resource management without relying on slow and complex garbage collection schemes.
 
 
 ### Functions overloading
 
-Ü supports defining functions with same name in same space, as soon as signatures are different.
+Ü supports defining functions with same name in same space, as soon as their signatures are different.
 This allows to avoid boilerplate by defining different names/name suffixes for functions that do almost the same except a couple of details.
 
 
@@ -151,7 +152,7 @@ This includes destructors, default-constructors, copy-constructors, copy-assignm
 Ü has several type categories:
 
 * fundamental scalars - integers (signed and unsigned), floating point, chars, bytes, bool, void
-* arrays with fixed size
+* arrays with fixed size (known at compile-time)
 * tuples
 * structs and classes
 * enums - simple types with fixed set of possible predefined named values (much like in C++, but stricter)
@@ -165,7 +166,7 @@ These type kinds are sufficient to express any other complex data structures.
 
 Ü has both type and function templates, that enables to define abstract data structures, abstract functions, much like C++ does.
 
-Important feature of Ü templates is Duck-typing.
+Important feature of Ü templates is duck-typing.
 There are no traits/type requirements in templates.
 If a template performs some operation over given type (operator, copying, method call), code compiles, if given type supports such operations and doesn't compile - if not.
 Such system requires less boilerplate for both template authors and template users.
@@ -192,7 +193,7 @@ This allows for most classes not to be polymorph and thus to avoid polymorhpism 
 No exceptions means no hidden control flow and no possibility to silently ignore errors.
 This allows to improve overall code reliability.
 
-The absence of exceptions also may improve result performance and reduce result executables size.
+The absence of exceptions also may improve runtime performance and reduce result executables size.
 
 
 ### Compile-time evaluation
@@ -218,7 +219,7 @@ Some code, impossible with templates, is possible to generate using mixins.
 
 ### Code structuring via namespaces
 
-Ü supports namespaces like in C++
+Ü supports namespaces like in C++.
 Namespaces may be used in different files, they may be opened and closed multiple times, nested namespaces are possible.
 Mechanism of namespaces allows to structure code independent on project files structure.
 
@@ -233,5 +234,5 @@ Since Ü is relatively fast, it allows to write effective concurrent programs fo
 
 Ü supports anonymous functions with context capturing.
 Such functions are named lambdas.
-They are useful together with usage of functions/algorithms accepting a function-like object.
+They are useful in combination with functions/algorithms accepting a function-like object.
 It's much easier to pass a lambda, rather than creating a separate class with overloaded `()` operator for only single use.
