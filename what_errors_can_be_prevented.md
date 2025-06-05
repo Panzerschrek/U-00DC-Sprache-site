@@ -65,10 +65,58 @@ fn Foo( bool b, i32 mut x )
 }
 ```
 
+Trivially-unreachable code is also detected and an error is generated.
+
+```
+fn Foo()
+{
+	return;
+	var i32 x= 0; // Compilation error - unreachable code.
+}
+
+fn Bar( bool b ) : i32
+{
+	if( b )
+	{
+		return 66;
+	}
+	else
+	{
+		return 77;
+	}
+	return 33; // Compilation error - unreachable code.
+}
+```
+
+
+### Uninitialized variables
+
+In Ü all variables should be properly initialized.
+Fundamental scalars require explicit initialization, classes may have default construcors allowing safe default initialization.
+If a variable isn't initialized properly, an error is generated.
+
+```
+fn Foo()
+{
+	var i32 mut x; // Compilation error - expected initializer for variable "x".
+}
+
+struct S
+{
+	f32 f;
+}
+
+fn Bar()
+{
+	var S mut s{}; // Compilation error - expected initializer for field "f".
+}
+```
+
 
 ### Immutability violation
 
 Ü compiler prevents modifying variables/references marked as `imut`.
+It's important to prevent such modification, since mutable/immutable variables separation is an important part of Ü safety mechanisms.
 
 ```
 fn Foo( i32& x )
@@ -79,6 +127,39 @@ fn Foo( i32& x )
 fn Bar( i32& x )
 {
 	var i32 &mut r= x; // Error, creating a mutable reference for immutable reference.
+}
+```
+
+
+### Missing values in switch operator
+
+Ü has `switch` operator, which allows to redirect control flow based on some scalar value.
+It's statically checked that the whole range of values is handled.
+
+```
+fn Foo( u32 x )
+{
+	switch(x)
+	{
+		0u -> {},
+		1u -> {},
+		2u -> {},
+		3u ... 33u -> {},
+		// Compilation error - values in range 34 to 4294967295 aren't handled.
+	}
+}
+
+enum SomeEnum{ A, B, C, D, E, G, H, I }
+
+fn Bar( SomeEnum e )
+{
+	switch(e)
+	{
+		SomeEnum::A, SomeEnum::B -> {},
+		SomeEnum::C ... SomeEnum::E -> {},
+		SomeEnum::I -> {},
+		// Compilation error - values in range 5 to 6 (SomeEnum::G to SomeEnum::H) aren't handled.
+	}
 }
 ```
 
@@ -389,3 +470,10 @@ fn Foo()
 }
 
 ```
+
+
+### Out of memory
+
+If operating system fails to allocate enough memory for a program written in Ü, this program will be likely terminated.
+Ü has no mechanism of handling of out-of-memory sistuations, since doing so isn't generally possible and can make the language too complex.
+Other langauges like C++ or Java try to throw exceptions if memory allocation fails, but usually this doesn't work well and programs aren't designed to catch handle such exceptions.
