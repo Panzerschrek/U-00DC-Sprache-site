@@ -5,6 +5,7 @@
 
 Ü compiler obviously detects errors related to the program general unsoundness.
 This includes:
+* missing imports
 * lexical errors
 * syntax errors
 * redefinition errors
@@ -134,6 +135,65 @@ fn Foo( $(i32) x )
 }
 
 fn Bar() unsafe;
+```
+
+### Preventing using a variable after its lifetime ends
+
+Ü compiler ensures that no variable can be accessed after its lifetime ended.
+
+```
+import "/optional_ref.u"
+
+fn Foo() : i32&
+{
+	var i32 x= 0;
+	return x; // Compilation error - destroyed variable "x" still has references.
+}
+
+fn Bar()
+{
+	var ust::optional_ref_imut</i32/> mut ref;
+	{
+		var i32 x= 0;
+		ref.reset(x); // Save reference to "x" inside "ref".
+	} // Compilation error - destroyed variable "x" still has references.
+	auto x_val= ref.try_deref(); // Without error generated above this code can access destroyed variable "x".
+}
+```
+
+### Preventing use-after-free errors
+
+Ü reference checking mechanism can statically prevent using heap memory after it was freed.
+
+```
+import "/vector.u"
+
+fn Foo()
+{
+	var ust::vector</i32/> mut v;
+	v.push_back(24);
+	auto& first= v.front(); // Hold a reference to first element of the vector, which is heap-allocated.
+	v.push_back(42); // Compilation error - modifying variable "v" while a derived reference to it exists.
+	// Without such error it's possible that "push_back" method realoccates internal storage and invalidates "first" reference.
+}
+```
+
+
+### Preventing unsynchronized mutation from different threads
+
+Ü reference checking mechanism allows to prevent data access synchronization errors - while two or more threads can modify the same variable without synchronization.
+
+```
+import "../source/ustlib/imports/thread.u"
+
+fn Foo()
+{
+	var i32 mut x= 0;
+
+	// This thread class instance holds a mutable reference to "x".
+	auto thread= ust::make_thread( lambda[&]() { x*= 2; } );
+	x-= 3; // Compilation error - modifying variable "x", which has mutable references to it.
+}
 ```
 
 
