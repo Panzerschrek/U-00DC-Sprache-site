@@ -256,11 +256,121 @@ fn GetFour() : i32
 
 ### Halting the program
 
+Ü has `halt` operator for abnormal program termination.
+Nothing prevents one to use it to cause such termination or trigger some code, which causes such termination.
+It's not considered to be a problem, since such termination happens in a controlled manner.
+
+```
+fn Read( [ i32, 4 ]& arr, size_type i ) : i32
+{
+	return arr[i];
+}
+
+fn Foo()
+{
+	var [ i32, 4 ] arr= zero_init;
+	auto x= Read( arr, 6s ); // This leads to "halt", since it causes out of bounds array access
+}
+
+fn Bar( bool b )
+{
+	halt if( b ); // "halt" is conditionally triggered.
+}
+
+fn Baz()
+{
+	var ust::optional_ref_imut</f32/> ref;
+	auto val= ref.try_deref(); // "halt" is triggered while trying accessing empty "optional_ref".
+}
+```
 
 ### Integer division by zero
 
+Integer division by zero isn't handled specially in Ü.
+If it happens, usual OS behavior for such cases is executed, which likely leads to program crash.
+
+So, it should be ensured by the programmer, that no integer division by zero happens.
+This also includes other integer division errors, like dividing minimum signed integer value by -1.
+
+
 ### Messing with unsafe code
+
+Nothing prevents one to write incorrect unsafe code.
+So, it's possible to cause a crash or some other sort of undefined behavior by misusing `unsafe`.
+
+```
+fn Foo() : i32
+{
+	var $(i32) ptr= zero_init;
+	unsafe
+	{
+		return $>(ptr); // This code will likely crash in runtime due to null pointer dereference.
+	}
+}
+```
+
 
 ### Messing with foreign code
 
+Ü allows to call functions from other languages, like C.
+It's generally not safe and can cause problems, if foreign functionjs aren't used correctly.
+
+```
+fn Foo()
+{
+	auto mut s= "foo";
+	// Undefined behavior - "strlen" C function expects a pointer to a null-terminated string, but strings in Ü aren't null-terminated by-default.
+	auto len= unsafe( strlen( $<(s[0]) ) );
+}
+
+fn nomangle strlen( $(char8) ptr ) unsafe;
+```
+
+
 ### Memory leaks via shared pointers
+
+Shared pointer library classes in Ü use reference counting to detect when it's necessary to destroy them.
+But it's possible to create a cycle with such pointers, which will be never freed, unless someone breaks this cycle manually.
+
+```
+import "/shared_ptr.u"
+
+struct Node
+{
+	i32 payload= 0;
+	ust::shared_ptr_nullable_mut</Node/> next;
+}
+
+fn Foo()
+{
+	auto node_ptr= ust::make_shared_ptr( Node{} );
+	with( mut lock : node_ptr.lock_mut() )
+	{
+		lock.deref().next= node_ptr;
+	}
+	// "node_ptr" now holds a shared pointer to itself, creating simple references cycle.
+}
+```
+
+
+### Deadlocks
+
+It's generally impossible to prevent deadlocks in compilation time, especially for such language as Ü, where it's possible to call foreign code and call various OS functions.
+So, one can easily create a deadlock.
+
+```
+import "/shared_ptr_mt.u"
+
+fn nomangle main()
+{
+	// "shared_ptr_mt" class contains a "rwlock" primitive to implement safe multithreaded mutation.
+	auto ptr= ust::make_shared_ptr_mt( 66 );
+	// Take a read lock.
+	auto lock0= ptr.lock_imut();
+	// Take another lock - mutable, while read lock still exists.
+	// In such case a thread, which needs a mutable lock, waits until other threads have no locks.
+	// But in this case it will wait forever, since current thread also has a read lock.
+	auto lock1= ptr.lock_mut();
+}
+
+```
