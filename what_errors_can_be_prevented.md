@@ -1,14 +1,15 @@
 ## What kinds of errors Ü can prevent
 
-Ü is designed to prevent many common programming errors and mistakes, which are typical for some other languages.
+Ü is designed to prevent many common programming errors and mistakes, which are typical for some other programming languages.
 Many problems, which cause runtime errors, may be caught in compilation time.
-Here are listed some of such errors.
+Here are listed some of such errors (but not all of them, obviously).
 
 
 ### General unsoundness errors
 
-Ü compiler obviously detects errors related to the program general unsoundness.
+Ü compiler obviously detects errors related to the program general structure.
 This includes:
+
 * missing imports
 * import loops
 * lexical errors
@@ -26,6 +27,12 @@ So, type errors can be detected during compilation.
 fn GetX() : u32
 {
 	return "not_a_number"; // Compilation error - expected integer, got char array.
+}
+
+fn Foo()
+{
+	var i32 x= 0;
+	var f32 y= x; // Compilation error - conversion between numeric types should be explicit.
 }
 ```
 
@@ -50,6 +57,14 @@ It's checked that `break` and `continue` operators are located only within loops
 fn Foo()
 {
 	continue; // Compilation error - "continue" outside loop.
+}
+
+fn Bar()
+{
+	loop label one
+	{
+		break label ane; // Compilation error - label "ane" not found.
+	}
 }
 ```
 
@@ -184,8 +199,8 @@ fn Foo( C& c ) : i32
 
 ### Accessing moved variables
 
-`move` operator in Ü basically ends lifetime for variable specified.
-So, accessing it is an error and such errors are detected.
+`move` operator in Ü ends lifetime for variable specified.
+So, accessing it after moving is an error and such errors are detected.
 
 ```
 fn Foo( ust::string8 mut s )
@@ -193,18 +208,6 @@ fn Foo( ust::string8 mut s )
 	auto s_move= move(s);
 	s += "a"; // Compilation error - trying to access and modify moved variable.
 }
-```
-
-
-### Inheritance rules violation
-
-Ü inheritance model allows for a class to have only one base class, but implement unlimited number of interfaces.
-If there is more than one base class, a compilation error is generated.
-
-```
-class A polymorph {}
-class B polymorph {}
-class C : A, B {} // Compilation error - "A" and "B" are both non-interfaces and thus are considered to be base classes.
 ```
 
 
@@ -248,6 +251,7 @@ fn Bar()
 }
 ```
 
+
 ### Use-after-free errors
 
 Ü reference checking mechanism can statically prevent using heap memory after it was freed.
@@ -261,7 +265,7 @@ fn Foo()
 	v.push_back(24);
 	auto& first= v.front(); // Hold a reference to first element of the vector, which is heap-allocated.
 	v.push_back(42); // Compilation error - modifying variable "v" while a derived reference to it exists.
-	// Without such error it's possible that "push_back" method realoccates internal storage and invalidates "first" reference.
+	// Without such error it's possible that "push_back" method reallocates internal storage and invalidates "first" reference.
 }
 ```
 
@@ -271,7 +275,7 @@ fn Foo()
 Ü reference checking mechanism allows to prevent data access synchronization errors - when two or more threads can modify the same variable without synchronization.
 
 ```
-import "../source/ustlib/imports/thread.u"
+import "/thread.u"
 
 fn Foo()
 {
@@ -281,6 +285,18 @@ fn Foo()
 	auto thread= ust::make_thread( lambda[&]() { x*= 2; } );
 	x-= 3; // Compilation error - modifying variable "x", which has mutable references to it.
 }
+```
+
+
+### Inheritance rules violation
+
+Ü inheritance model allows for a class to have only one base class, but implement unlimited number of interfaces.
+If there is more than one base class, a compilation error is generated.
+
+```
+class A polymorph {}
+class B polymorph {}
+class C : A, B {} // Compilation error - "A" and "B" are both non-interfaces and thus are considered to be base classes.
 ```
 
 
@@ -295,7 +311,7 @@ class A interface
 	fn virtual pure Foo( this );
 }
 
-class B : A // Compilation error - class still contains non-implemented virtual methods.
+class B : A // Compilation error - class still contains unimplemented virtual methods.
 {
 }
 
@@ -331,9 +347,9 @@ fn Foo( i32 x ) // Compilation error - argument "x" is unused.
 
 ## What kinds of errors Ü can't prevent
 
-Even in such language like Ü it's impossible to prevent all kinds of errors during compilation.
-Ü isn't powerfull enough to detect them.
-Doing so is impossible in a language with rich possibilities like Ü without adding to much constrains.
+Even in such safe language like Ü it's impossible to prevent all kinds of errors during compilation.
+Ü isn't powerful enough to detect them.
+Doing so is impossible in a language with rich possibilities like Ü, without adding to much constrains.
 Here are listed some mistakes which still may happen in Ü programs.
 
 
@@ -344,7 +360,12 @@ It's impossible to detect a logical error - a mismatch between what some piece o
 ```
 fn GetFour() : i32
 {
-	return 7;
+	return 7; // Obviously seven is not four.
+}
+
+fn MultiplyTwoNumbers( u32 x, u32 y ) : u32
+{
+	return x / y; // It doesn't look like multiplication.
 }
 ```
 
@@ -356,6 +377,8 @@ Nothing prevents one to use it to cause such termination or trigger some code, w
 It's not considered to be a problem, since such termination happens in a controlled manner, compared to undefined behavior and program state corruption typical for languages like C++.
 
 ```
+import "/optional_ref.u"
+
 fn Read( [ i32, 4 ]& arr, size_type i ) : i32
 {
 	return arr[i]; // This compiles without error, but runtime index check is inserted by the compiler.
@@ -370,6 +393,11 @@ fn Foo()
 fn Bar( bool b )
 {
 	halt if( b ); // "halt" is conditionally triggered.
+}
+
+fn Lol()
+{
+	Bar(true); // Trigger conditional "halt" in function "Bar".
 }
 
 fn Baz()
@@ -409,7 +437,7 @@ fn Foo() : i32
 ### Messing with foreign code
 
 Ü allows to call functions from other languages, like C.
-It's generally not safe and can cause problems, if foreign functionjs aren't used correctly.
+It's generally not safe and can cause problems, if foreign functions aren't used correctly.
 
 ```
 fn Foo()
@@ -419,14 +447,14 @@ fn Foo()
 	auto len= unsafe( strlen( $<(s[0]) ) );
 }
 
-fn nomangle strlen( $(char8) ptr ) unsafe;
+fn nomangle strlen( $(char8) ptr ) unsafe : size_type;
 ```
 
 
 ### Memory leaks via shared pointers
 
-Shared pointer library classes in Ü use reference counting to detect when it's necessary to destroy and free stored value.
-But it's possible to create a cycle with such pointers, which will be never freed, unless someone breaks this cycle manually.
+Shared pointer library classes in Ü use reference counting - in order to detect when it's necessary to destroy and free stored value.
+But it's possible to create a cycle with such pointers and members of such cycle will be never freed, unless someone breaks it manually.
 
 ```
 import "/shared_ptr.u"
@@ -459,13 +487,13 @@ import "/shared_ptr_mt.u"
 
 fn Foo()
 {
-	// "shared_ptr_mt" class contains a "rwlock" primitive to implement safe multithreaded mutation.
+	// "shared_ptr_mt" class contains an instance of "rwlock" primitive to implement safe multithreaded mutation.
 	auto ptr= ust::make_shared_ptr_mt( 66 );
 	// Take a read lock.
 	auto lock0= ptr.lock_imut();
 	// Take another lock - mutable, while a read lock still exists.
 	// In such case a thread, which needs a mutable lock, waits until other threads have no locks.
-	// But in this case it will wait forever, since current thread also has a read lock.
+	// But in this case it will wait forever, since current thread also holds a read lock.
 	auto lock1= ptr.lock_mut();
 }
 
@@ -475,5 +503,16 @@ fn Foo()
 ### Out of memory
 
 If operating system fails to allocate enough memory for a program written in Ü, this program will be likely terminated.
-Ü has no mechanism of handling of out-of-memory sistuations, since doing so isn't generally possible and can make the language too complex.
+Ü has no mechanism of handling of out-of-memory situations, since doing so isn't generally possible and can make the language too complex.
 Other langauges like C++ or Java try to throw exceptions if memory allocation fails, but usually this doesn't work well and programs aren't designed to catch handle such exceptions.
+
+
+```
+import "/string.u"
+
+fn Foo()
+{
+    // Trying to create a string with 2^56 elements, which is way large compared to total memory size of most modern computers.
+	var ust::string8 s( 1s << 56s, 'q' );
+}
+```
