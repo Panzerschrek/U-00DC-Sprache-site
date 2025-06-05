@@ -5,6 +5,7 @@
 The main goal of the language is safety, but not at the cost of bad performance and/or verbosity.
 
 Read [overview](/overview.md) for more information.
+Also read [what kind of errors](/what_errors_can_be_prevented.md) Ü can and can't prevent.
 
 
 ### Language Development
