@@ -1,11 +1,16 @@
 ## What kinds of errors Ü can prevent
 
+Ü is designed to prevent many common programming errors and mistakes, which are typical for some other languages.
+Many problems, which cause runtime errors, may be caught in compilation time.
+Here are listed some of such errors.
+
 
 ### General unsoundness errors
 
 Ü compiler obviously detects errors related to the program general unsoundness.
 This includes:
 * missing imports
+* import loops
 * lexical errors
 * syntax errors
 * redefinition errors
@@ -20,7 +25,7 @@ So, type errors can be detected during compilation.
 ```
 fn GetX() : u32
 {
-	return "not_a_number"; // Compilation error - expected integer, got string.
+	return "not_a_number"; // Compilation error - expected integer, got char array.
 }
 ```
 
@@ -118,11 +123,11 @@ If there is more than one base class, a compilation error is generated.
 ```
 class A polymorph {}
 class B polymorph {}
-class C : A, B {} // Compilation error - "A" and "B" are both non-interfaces and thus are considered as base classes.
+class C : A, B {} // Compilation error - "A" and "B" are both non-interfaces and thus are considered to be base classes.
 ```
 
 
-### Preventing unsafe operations outside unsafe blocks and expressions
+### Unsafe operations outside unsafe blocks and expressions
 
 Ü has `unsafe` blocks and expressions - for doing dangerous stuff.
 Doing dangerous stuff outside such blocks and expressions isn't allowed.
@@ -137,7 +142,8 @@ fn Foo( $(i32) x )
 fn Bar() unsafe;
 ```
 
-### Preventing using a variable after its lifetime ends
+
+### Using a variable after its lifetime ends
 
 Ü compiler ensures that no variable can be accessed after its lifetime ended.
 
@@ -161,7 +167,7 @@ fn Bar()
 }
 ```
 
-### Preventing use-after-free errors
+### Use-after-free errors
 
 Ü reference checking mechanism can statically prevent using heap memory after it was freed.
 
@@ -179,9 +185,9 @@ fn Foo()
 ```
 
 
-### Preventing unsynchronized mutation from different threads
+### Unsynchronized mutation from different threads
 
-Ü reference checking mechanism allows to prevent data access synchronization errors - while two or more threads can modify the same variable without synchronization.
+Ü reference checking mechanism allows to prevent data access synchronization errors - when two or more threads can modify the same variable without synchronization.
 
 ```
 import "../source/ustlib/imports/thread.u"
@@ -228,9 +234,10 @@ class E : D
 }
 ```
 
+
 ### Unused names
 
-Ü compiler also prevents leaving unused names.
+Ü compiler also prevents having unused names - variables, types, functions, etc.
 It's done in order to prevent some common mistakes and encourage old code removal.
 
 ```
@@ -243,6 +250,12 @@ fn Foo( i32 x ) // Compilation error - argument "x" is unused.
 
 ## What kinds of errors Ü can't prevent
 
+Even in such language like Ü it's impossible to prevent all kinds of errors during compilation.
+Ü isn't powerfull enough to detect them.
+Doing so is impossible in a language with rich possibilities like Ü without adding to much constrains.
+Here are listed some mistakes which still may happen in Ü programs.
+
+
 ### Logical errors
 
 It's impossible to detect a logical error - a mismatch between what some piece of code should do and how it was programmed.
@@ -254,22 +267,23 @@ fn GetFour() : i32
 }
 ```
 
+
 ### Halting the program
 
 Ü has `halt` operator for abnormal program termination.
 Nothing prevents one to use it to cause such termination or trigger some code, which causes such termination.
-It's not considered to be a problem, since such termination happens in a controlled manner.
+It's not considered to be a problem, since such termination happens in a controlled manner, compared to undefined behavior and program state corruption typical for languages like C++.
 
 ```
 fn Read( [ i32, 4 ]& arr, size_type i ) : i32
 {
-	return arr[i];
+	return arr[i]; // This compiles without error, but runtime index check is inserted by the compiler.
 }
 
 fn Foo()
 {
 	var [ i32, 4 ] arr= zero_init;
-	auto x= Read( arr, 6s ); // This leads to "halt", since it causes out of bounds array access
+	auto x= Read( arr, 6s ); // This leads to "halt", since it causes out of bounds array access.
 }
 
 fn Bar( bool b )
@@ -284,6 +298,7 @@ fn Baz()
 }
 ```
 
+
 ### Integer division by zero
 
 Integer division by zero isn't handled specially in Ü.
@@ -295,7 +310,7 @@ This also includes other integer division errors, like dividing minimum signed i
 
 ### Messing with unsafe code
 
-Nothing prevents one to write incorrect unsafe code.
+Nothing prevents one to write incorrect `unsafe`code.
 So, it's possible to cause a crash or some other sort of undefined behavior by misusing `unsafe`.
 
 ```
@@ -329,7 +344,7 @@ fn nomangle strlen( $(char8) ptr ) unsafe;
 
 ### Memory leaks via shared pointers
 
-Shared pointer library classes in Ü use reference counting to detect when it's necessary to destroy them.
+Shared pointer library classes in Ü use reference counting to detect when it's necessary to destroy and free stored value.
 But it's possible to create a cycle with such pointers, which will be never freed, unless someone breaks this cycle manually.
 
 ```
@@ -355,19 +370,19 @@ fn Foo()
 
 ### Deadlocks
 
-It's generally impossible to prevent deadlocks in compilation time, especially for such language as Ü, where it's possible to call foreign code and call various OS functions.
+It's generally impossible to prevent deadlocks in compilation time, especially for such language like Ü, where it's possible to call foreign code and various OS functions.
 So, one can easily create a deadlock.
 
 ```
 import "/shared_ptr_mt.u"
 
-fn nomangle main()
+fn Foo()
 {
 	// "shared_ptr_mt" class contains a "rwlock" primitive to implement safe multithreaded mutation.
 	auto ptr= ust::make_shared_ptr_mt( 66 );
 	// Take a read lock.
 	auto lock0= ptr.lock_imut();
-	// Take another lock - mutable, while read lock still exists.
+	// Take another lock - mutable, while a read lock still exists.
 	// In such case a thread, which needs a mutable lock, waits until other threads have no locks.
 	// But in this case it will wait forever, since current thread also has a read lock.
 	auto lock1= ptr.lock_mut();
