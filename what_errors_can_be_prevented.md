@@ -500,6 +500,48 @@ fn Foo()
 ```
 
 
+### Stack overflow
+
+Ü uses native stack for call frames and local variables.
+Native stack is usually very small - around several megabytes in size.
+Because of that stack overflow is possible, if an Ü program allocates way too much memory for local variables or if it has deep call stacks.
+Usually this happens due to infinite recursion.
+
+```
+fn Foo()
+{
+	// Allocate 64 MB of stack memory, which exceeds typical stack size limits.
+	var [ i32, 1s << 24u ] mut arr= zero_init;
+	arr[7]= 0;
+}
+
+// Calling this function will lead to infinite recursion.
+fn Bar( i32 x )
+{
+	Bar( x * 2 );
+	Bar( x * 2 + 1 );
+}
+```
+
+
+### Infinite loops
+
+Ü can't generally prevent infinite loops.
+It's easily create one.
+
+```
+fn Foo()
+{
+	// This loop runs forever.
+	while( Bar() )
+	{}
+}
+
+fn Bar() : bool { return true; }
+
+```
+
+
 ### Out of memory
 
 If operating system fails to allocate enough memory for a program written in Ü, this program will be likely terminated.
@@ -512,7 +554,7 @@ import "/string.u"
 
 fn Foo()
 {
-    // Trying to create a string with 2^56 elements, which is way large compared to total memory size of most modern computers.
+	// Trying to create a string with 2^56 elements, which is way large compared to total memory size of most modern computers.
 	var ust::string8 s( 1s << 56s, 'q' );
 }
 ```
