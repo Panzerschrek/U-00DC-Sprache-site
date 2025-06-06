@@ -1,7 +1,7 @@
 ## What kinds of errors Ü can prevent
 
 Ü is designed to prevent many common programming errors and mistakes, which are typical for some other programming languages.
-Many problems, which cause runtime errors, may be caught in compilation time.
+Many problems, which cause runtime errors in these languages, may be caught in compilation time in Ü.
 Here are listed some of such errors (but not all of them, obviously).
 
 
@@ -107,7 +107,7 @@ fn Bar( bool b ) : i32
 ### Uninitialized variables
 
 In Ü all variables should be properly initialized.
-Fundamental scalars require explicit initialization, classes may have default construcors allowing safe default initialization.
+Fundamental scalars require explicit initialization, classes may have default constructors allowing safe default initialization.
 If a variable isn't initialized properly, an error is generated.
 
 ```
@@ -136,12 +136,12 @@ It's important to prevent such modification, since mutable/immutable variables s
 ```
 fn Foo( i32& x )
 {
-	++x; // Error, modifying a variable using immutable reference.
+	++x; // Error, modifying a variable using an immutable reference.
 }
 
 fn Bar( i32& x )
 {
-	var i32 &mut r= x; // Error, creating a mutable reference for immutable reference.
+	var i32 &mut r= x; // Error, creating a mutable reference for an immutable reference.
 }
 ```
 
@@ -196,6 +196,7 @@ fn Foo( C& c ) : i32
 	return c.x_; // Compilation error - accessing private class field outside this class.
 }
 ```
+
 
 ### Accessing moved variables
 
@@ -349,8 +350,8 @@ fn Foo( i32 x ) // Compilation error - argument "x" is unused.
 
 Even in such safe language like Ü it's impossible to prevent all kinds of errors during compilation.
 Ü isn't powerful enough to detect them.
-Doing so is impossible in a language with rich possibilities like Ü, without adding to much constrains.
-Here are listed some mistakes which still may happen in Ü programs.
+Doing so is impossible in a language with rich possibilities like Ü, without adding too many constrains.
+Here are listed some mistakes, which still may happen in Ü programs.
 
 
 ### Logical errors
@@ -416,10 +417,23 @@ If it happens, usual OS behavior for such cases is executed, which likely leads 
 So, it should be ensured by the programmer, that no integer division by zero happens.
 This also includes other integer division errors, like dividing minimum signed integer value by -1.
 
+```
+fn Foo()
+{
+	auto res= Div( 67u, 0u );
+}
+
+fn Div( u32 x, u32 y ) : u32
+{
+	return x / y; // This code crashes in runtime, if "y" is zero.
+}
+
+```
+
 
 ### Messing with unsafe code
 
-Nothing prevents one to write incorrect `unsafe`code.
+Nothing prevents one to write incorrect `unsafe` code.
 So, it's possible to cause a crash or some other sort of undefined behavior by misusing `unsafe`.
 
 ```
@@ -472,7 +486,7 @@ fn Foo()
 	{
 		lock.deref().next= node_ptr;
 	}
-	// "node_ptr" now holds a shared pointer to itself, creating simple references cycle.
+	// "node_ptr" now holds a shared pointer to itself, creating simple shared pointers cycle.
 }
 ```
 
@@ -527,7 +541,7 @@ fn Bar( i32 x )
 ### Infinite loops
 
 Ü can't generally prevent infinite loops.
-It's easily create one.
+It's easily to create one.
 
 ```
 fn Foo()
@@ -545,9 +559,8 @@ fn Bar() : bool { return true; }
 ### Out of memory
 
 If operating system fails to allocate enough memory for a program written in Ü, this program will be likely terminated.
-Ü has no mechanism of handling of out-of-memory situations, since doing so isn't generally possible and can make the language too complex.
-Other langauges like C++ or Java try to throw exceptions if memory allocation fails, but usually this doesn't work well and programs aren't designed to catch handle such exceptions.
-
+Ü has no mechanism for handling out-of-memory situations, since doing so isn't generally possible and can make the language too complex.
+Other languages like C++ or Java try to throw exceptions if memory allocation fails, but usually this doesn't work well and programs aren't designed to catch and handle such exceptions.
 
 ```
 import "/string.u"
