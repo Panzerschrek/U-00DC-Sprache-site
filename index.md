@@ -71,6 +71,8 @@ Contributions are welcome!
 
 [Windows build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_windows.zip)
 
+[Visual Studio extension](https://panzerschrek.github.io/U-00DC-Sprache-site/Ü_extension.vsix)
+
 You can build Ü compiler and tools for other systems from the source code.
 See more information in the project repository.
 
