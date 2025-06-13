@@ -47,6 +47,14 @@ jobs:
           repo: Panzerschrek/U-00DC-Sprache
           workflow: interpreter_emscripten.yml
           if_no_artifact_found: fail
+      - name: Download Visual Studio extension
+        id: download-visual-studio-extension
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          repo: Panzerschrek/U-00DC-Sprache
+          branch: master
+          workflow: visual_studio_extension.yml
+          if_no_artifact_found: fail
       - name: Unpack external resources
         run: ./unpack_external_resources.sh
       - name: Setup Pages
