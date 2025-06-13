@@ -48,6 +48,7 @@ jobs:
           workflow: interpreter_emscripten.yml
           if_no_artifact_found: fail
         uses: dawidd6/action-download-artifact@v2
+      - name: Download Visual Studio extension
         with:
           repo: Panzerschrek/U-00DC-Sprache
           branch: master
