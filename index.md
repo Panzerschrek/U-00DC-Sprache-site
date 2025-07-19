@@ -13,7 +13,7 @@ Also read [what kind of errors](/what_errors_can_be_prevented.md) Ü can and can
 Ü is an open-source software, distributed under the terms of BSD-3 license.
 Anyone can participate in its development.
 
-Ü compiler is based on LLVM library.
+Ü compiler is based on LLVM library and thus leverages many its powers, including numerous optimizations and code generation support for many platforms.
 
 There are two compilers of Ü - Compiler0, written in C++ and Compiler1 - written (mostly) in Ü.
 Besides the compiler another helpful components exist.
@@ -37,8 +37,9 @@ It contains most features required for effective coding.
 The compiler is relatively stable and fast and may be used without problems.
 It can even compile itself (Compiler1 version, obviously).
 
-Ü has its own standard library with basic routines and containers (vector, optional, variant, etc.).
+Ü has its own standard library with basic routines and containers (vector, optional, variant, hash_map, etc.).
 Also it contains basic functions for filesystem interaction.
+Multithreading is also supported - via thread class template and various synchronization primitives.
 Time-related functionality, networking or other system-specific functions aren't implemented yet.
 
 Ü has its own build system.
@@ -53,6 +54,7 @@ It's not so hard to write your own syntax highlighting file, if there is no such
 
 There is also a converter of C headers, that may help in creation of C bindings.
 It's especially helpful until Ü has no big ecosystem of native (written in Ü) libraries.
+Thus using external C code works almost in all cases (with rare exceptions).
 
 
 ### Links
