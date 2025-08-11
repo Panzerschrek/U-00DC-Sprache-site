@@ -40,6 +40,25 @@ jobs:
           workflow: windows.yml
           if_no_artifact_found: fail
           skip_unpack: true
+      - name: Download GNU/Linux AArch64 build
+        id: download-gnu-linux-aarch64-build
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          repo: Panzerschrek/U-00DC-Sprache
+          branch: master
+          workflow: gnu_linux_aarch64_release_llvm_src.yml
+          name: compiler_gnu_linux_aarch64
+          if_no_artifact_found: fail
+          skip_unpack: true
+      - name: Download MacOS build
+        id: download-macos-build
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          repo: Panzerschrek/U-00DC-Sprache
+          branch: master
+          workflow: macos.yml
+          if_no_artifact_found: fail
+          skip_unpack: true
       - name: Download emscripten build
         id: download-emscripten-build
         uses: dawidd6/action-download-artifact@v2
