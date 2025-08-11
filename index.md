@@ -70,6 +70,7 @@ Contributions are welcome!
 ### Compiler downloads
 
 [GNU/Linux build (x86_64)](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_gnu_linux.zip)
+
 [GNU/Linux build (aarch64)](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_gnu_linux_aarch64.zip)
 
 [Windows build](https://panzerschrek.github.io/U-00DC-Sprache-site/compiler_windows.zip)
