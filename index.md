@@ -38,9 +38,9 @@ The compiler is relatively stable and fast and may be used without problems.
 It can even compile itself (Compiler1 version, obviously).
 
 Ü has its own standard library with basic routines and containers (vector, optional, variant, hash_map, etc.).
-Also it contains basic functions for filesystem interaction.
+Also it contains basic functions for filesystem interaction and network support.
 Multithreading is also supported - via thread class template and various synchronization primitives.
-Time-related functionality, networking or other system-specific functions aren't implemented yet.
+Time-related functionality or some other system-specific functions aren't implemented yet.
 
 Ü has its own build system.
 It simplifies building Ü programs consisting of many source files, libraries, executables, etc.
