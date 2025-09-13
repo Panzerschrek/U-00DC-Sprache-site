@@ -1,0 +1,310 @@
+---
+title: The pure C heresy
+---
+
+## The pure C heresy
+
+Recently I noticed a strange trend in (relatively) low-level programming circles.
+It consists of rejecting of C++ and similar languages (like Rust) in favor of pure C.
+It isn't common, but it has significant number of followers, some of them are pretty prominent.
+Especially it's common among game programmers, system programmers and other people, who need to use proper programming languages (not interpreted/VM-based snail-slow ones).
+
+In this article I want to oppose this trend.
+
+I name this trend _the pure C heresy_.
+But why heresy?
+This trend reminds me one particular heresy in the history of the russian orthodoxy - [Heresy of the Judaizers](https://en.wikipedia.org/wiki/Heresy_of_the_Judaizers).
+Followers of this heresy rejected some Christianity elements in favor of old-style Judaism practices.
+In the same way followers of the pure C heresy reject innovations of C++.
+
+
+### Some notable pure C heretics
+
+Linus Torvalds is one of the most known pure C heretics.
+His criticism of C++ is focused on this language to be too complex, which doesnt't allow one to achieve good code quality and reasonable performance.
+Also he claims, that C++ "makes memory allocations behind your back" and names C++ exceptions fundamentally broken.
+
+Eskil Steenberg seems to be one of typical examples of pure C heretics.
+In his very popular [video](https://www.youtube.com/watch?v=443UNeGrFoM) he explains, why and how he writes C.
+In other talks/articles he also advocates pure C usage.
+
+Ryan Fleury.
+In his [blog](https://www.rfleury.com/) and in other sources he argues, that C compiles much faster in comparison to C++ and that C++ isn't really necessary.
+Curiously he reinvents a lot of stuff (like table-based code generation), because C is too weak to achieve the same functionality via language means.
+
+Surprisingly I know no pure C heresiarch.
+Maybe because this heresy wasn't founded centralized by some specific person, but was formed independently in different places by different people.
+
+
+### Notable programming languages affected by the pure C heresy
+
+The pure C heresy is not a phenomena of C and C++ only.
+There are several programming languages, which was affected by it.
+Their design rejects C++ innovations and traditions and tries to go C way.
+
+[Zig](https://ziglang.org/) programming language is a good example of the pure C heresy.
+It rejects C++ innovations and claims to be better C.
+His author Andrew Kelly is considered to be pure C heretic.
+
+[Hare](https://harelang.org) programming language is also heretic, by trying to be just a better C.
+Its authors prefer simplicity over expressiveness, so that this language is pretty primitive.
+
+[Go](https://go.dev/) programming language is also a good example of the pure C heresy, but somewhat evolved into a much better, but still heretic language.
+It tries to be as simple as C, but with addition of some really necessary elements, like built-in arrays, strings, hash-tables.
+But it rejects a lot of C++ innovations, even such basic like type and function templates.
+Recently generics were added, but it's too late, this should be done from the start.
+
+[Odin](https://odin-lang.org/) programming language also tries to be a better C.
+And it really adds many interesting improvements and even has some sort of templates (parametric generics).
+But it's still fundamentally flawed - it has no proper destructors, only `defer`.
+Thus it's yet another form of the pure C heresy.
+
+
+### C++ as better C
+
+Even if pure C heretics find C++ overcomplicated and not so good, C++ still can offer a lot of neat features usable in old C-style programming.
+This includes:
+
+* C++ has stronger type system.
+  C++ doesn't allow by default conversions between unrelated pointer types, doesn't allow to violate mutability so easily.
+  Additionally it may prevent some unsafe numeric type conversions, if compilation options like `-Wconversion` are used.
+* C++ structs don't require prefixing struct name with `struct` keyword when using it, nor they require adding a typedef for them.
+* C++ provides a better alternative for defines for constants - `constexpr` variables.
+  They fulfill the same purpose as simple literal defines, but are generally safer (no preprocessor mess is involved) and result code is as fast as with define constants.
+* C++ template functions provide better alternative for C function-like macros, which are generally problematic.
+  A good example are macros like `min` and `max`, which may be replaced with such template functions.
+* C++ has namespaces, which allows library authors to place their code in a specific namespace, which is better relative to C approach with manual prefix adding for each function/type.
+* C++ provides scoped enums, which allows to avoid adding prefixes for enumerator names to ensure their uniqueness.
+  Also scoped enums prevent mistakes where improper enum type is used.
+
+So, even for C purists there is no reason not to use features listed above.
+Earlier (in 90s) C++ wasn't so common and maybe there were problems finding a working C++ compiler for some particular target platform.
+But nowadays C++ compilers like *GCC* or *clang* support a lot of systems/CPU architectures, so that it's extremely unlikely, that they can't be used for compiling for some specific platform.
+Even if it happens, generally it's better at least to try adopting *clang* or *GCC* for such a platform, rather than writing a whole program using plain C.
+
+Sometimes pure C heretics claim, that C has less longevity issues compared to C++.
+But I doubt it's true.
+Both languages avoid breaking backward compatibility and thus it's unlikely, that code written for earlier standards can't run on newer standards.
+And even if something breaks in C++ code with a newer compiler version, it's not an unique C++ problem, C code can be broken in similar cases too.
+
+
+### C++ beyond better C
+
+I think, that C++ is much more than better C.
+It has several innovations, which makes it into completely new and much better language.
+This includes:
+
+* C++ has destructors.
+  I find destructors to be the core feature of the whole language and overall one of the most significant programming inventions.
+  Destructors allow to implement RAII idiom, which greatly simplifies code compared to manual calls to cleanup functions (memory free, file close, etc.) like in C code.
+  A lot of useful concepts are possible only because of destructors - basic heap-allocated containers like `std::string` and `std::vector`, smart pointers (`std::unique_ptr`, `std::shared_ptr`), `std::thread` class, etc.
+* C++ has type templates, which allows to implement abstract data structures, without messy preprocessor, which is usually used by pure C heretics as poor's man replacement for this.
+* C++ has functions overloading, which allows to avoid boilerplate code by adding different suffixes for some functions, which do the same stuff but with slightly different arguments.
+* C++ allows operators overloading, which greatly simplifies some code.
+  Especially it's useful for `=` operators - it's much simpler to write `string_a= string_b;`, compared to a C-style function call like `copy_string( &string_a, &string_b );`.
+  Arithmetic operators overloading is also useful, especially for things like vectors and matrices.
+* C++ supports dynamic type-safe polymorphism via inheritance.
+  It's much handier and safer compared to `void*` pointers usage, like in C.
+  C++ is often criticized, because it's possible to create huge inheritance hierarchies, but this criticism isn't correct - the language itself doesn't force one to create such hierarchies, one doesn't need to use them, if it isn't really necessary.
+* C++ has member functions (methods), which allows to have type-specific functions in one place.
+  Together with `private` visibility it allows encapsulation of implementation details.
+* C++ has references, which are a good addition to C pointers.
+  They require no syntax for taking reference/dereferencing, they are always non-null.
+
+Pure C heretics greatly reduce their productivity by rejecting usage of all these neat elements of C++.
+When an average C++ programmer works on actual problem solving, pure C heretics write boilerplate code again and again, occasionally trying to implement in C something resembling C++ features.
+
+
+### C++'s own sins
+
+I must admit, that some C++ criticism, mentioned by pure C heretics, is correct.
+C++ has a long path of development behind it and this path wasn't always straight.
+
+In initial stages of development C++ was heavily affected by OOP ideas in their worst form.
+Inheritance was used too much and thus multiple inheritance and even virtual inheritance were added into the language.
+These language features are now considered to be harmful and they are used rarely.
+But they still remain with us (for backward compatibility reasons).
+Nowadays it's preferred to avoid using inheritance, if it isn't strictly necessary and even if it's used, it's limited for simple cases like interface-implementation, for other purposes composition or `std::variant` are used.
+
+Exceptions are also one of the greatest C++ sins.
+They were problematic from the start, several attempts to fix them (like `noexcept` annotations) were done, but C++ exceptions still remain fundamentally wrong.
+They violate one of the most significant C++ design principles - don't pay for what you don't use.
+Even so-called zero-cost exception implementations (on happy path) aren't really zero-cost, since they affect optimizations, because of possible unwinding.
+Also they introduce additional executable bloat - for unwinding code.
+
+C++ exceptions are also problematic, since it's allowed to pass them silently to the caller, in hope if caller can handle them.
+But this usually doesn't happen and thus exceptions are caught in  the `main` function or aren't caught at all.
+
+All these OOP ideas and exceptions may be considered to be another sort of heresy in C++.
+It's fine to name it Java-heresy, since Java is a pretty popular language, almost entirely designed around OOP ideas.
+
+
+### Ü as much better C++
+
+And since I am Ü author, I want to praise it, of course.
+
+Ü tries to preserve good elements of C++, but it rejects its sins.
+Also it doesn't contain many elements, which C++ inherited from C and which are considered to be harmful, at least in such unsafe form.
+
+Ü has destructors, functions and operators overloading, type templates, function templates, namespaces, encapsulation - all neat additions of C++.
+
+Ü has inheritance, but it's limited and simplified - no multiple inheritance is possible, except implementing more than one interface.
+Also Ü has clear separation between polymorph and non-polymorph classes, which eliminates problems, which C++ have, like with missing virtual destructor.
+
+Ü has no exceptions and will never have them.
+There is no special mechanism for handling so-called "errors".
+Errors are just considered to be one of possible outcomes and thus are handled exactly like other values.
+
+Ü has clear separation between safe and unsafe code, unlike C or C++, where all code is practically unsafe.
+But the most important Ü feature is its reference checking mechanism, which in combination of safe/unsafe code separation eliminates a lot of errors in compilation stage.
+What in C++ is often a runtime crash (if one has a luck to catch such crash while debugging) is compilation error in Ü.
+
+
+## A couple of words about Rust
+
+Rust is generally a good C++ successor language.
+It provides safety (as Ü does) and just like C++ has a lot of neat features.
+Unfortunately it isn't ideal.
+
+First, it has no such nice feature of C++ like references.
+What is called references in Rust are just glorified pointers - they can be re-assigned and require additional boilerplate for taking reference/dereferencing.
+Why it was done in this way is unclear for me.
+Perhaps some pure C heretics affected this design decision.
+
+Second, it's heavily focused on traits.
+They add extra boilerplate without adding much, C++ has duck-typing instead and it works well.
+Also dynamic polymorphism in Rust is implemented atop of traits, which is somewhat strange, since runtime trait objects are limited in comparison to compile-time traits.
+
+Third, Rust has no functions overloading.
+This adds some boilerplate, since functions doing the same stuff must be named differently.
+There is some sort of overloading via trait implementations, but it's not a full equivalent to proper functions overloading.
+
+I still think, that Rust is a good language, moving towards right ideas.
+But it's still flawed, that's why I develop Ü.
+
+
+### Better performance fallacy
+
+Some pure C heretics claim, that C++ does too much unnecessary stuff, which leads to degraded performance.
+They often criticize RAII idiom and say, that managing a lot of small memory allocations via RAII, what is usual in C++, leads to slower running code.
+
+But such claims are fundamentally flawed.
+C++ (or other languages having its heritage) allows to write low-level code and manage memory and do other stuff manually.
+So, if memory management for millions of objects/strings/etc. is an issue (creates a bottleneck), one can write code, which does this differently.
+The main advantage of C++ is that in places, where squeezing every bit of performance isn't necessary, one can use RAII idiom (like standard library containers), which is generally easier compared to managing each allocation individually, what is typical for C programs.
+
+There is one more performance benefit of C++, compared to pure C, which isn't obvious.
+Writing trivial code and code without strict performance requirements in C++ is generally much faster compared to similar C code.
+This gives for a programmer more time for optimizing code, which should be fast.
+At the end a typical C++ program may be better optimized compared to a pure C program, since more time budget is left for such optimizations.
+
+There are also examples of cases, where just using C++ gives better performance compared to pure C.
+Like C `qsort` is generally slower compared to C++ `std::sort`, because the last one benefits from compile-time monomorphisation.
+Yet another example are modern C++ formatting functions (but not old OOP-style streams) in comparison to C `printf` - they can parse format string in compile time and choose stringification code for given types statically.
+And generally C++ code tends to compile-time polymorphism, compared to pure C, where function pointers and `void*` data pointers are still widely used for same things.
+
+
+### Debugging fallacy
+
+A lot of pure C heretics mention, that compilation speed for them is very important.
+But why exactly?
+Does it matter if a program is recompiled in ten seconds or in one second after a minor change?
+But for pure C heretics it matters!
+
+C as a programming language isn't very restrictive.
+So it's easy to write erroneous code, which compiles fine.
+But it will obviously not work as expected.
+And how C heretics deal with it?
+They debug their code to check if it's working, and if not (what is the most probable outcome), they need all power of modern debuggers to find, what exactly is wrong.
+And each even minor code change may require such tedious debugging.
+So, if one needs to launch a debugger again and again, it's better to save at least some time not waiting too much for compilation to end.
+And compiling pure C may be faster compared to compiling C++ code with a lot of templates.
+
+At the and a typical C heretic may spend more time debugging his code compared to writing it.
+Some experienced pure C heretics even go further and write their own code for debugging simplification, like debug allocators, tracing code, etc.
+And I admit, this may be sometimes useful.
+But the whole approach is fundamentally flawed.
+
+What is wrong in this approach?
+Debugging is generally much harder compared to writing code.
+While coding one sees only program's text - that's it, there is not much mental burden.
+But a debuggable program is much difficult subject for reasoning, compared to its source text - it has one or more execution threads, a call stack associated with each of them, local variables for each call stack, global variables, global thread-local variables.
+Each variable is often not just a scalar, but maybe a pointer (pointing somewhere else), a composite value or generally an entire hierarchy.
+One need to inspect call stacks and variables to reason, what's going wrong.
+
+Instead of debugging a programmer should spend his time writing code, rather than debugging it, since it's generally more productive.
+But with C it's hard to do so, since erroneous code is inevitable in this language, one need to use something better - like C++.
+C++ in many cases just doesn't allow to write code, which is obviously incorrect, it has stricter type system preventing many errors and has better abstractions (like templates and RAII), which eliminates typical C mistakes.
+Pure C heretics don't understand this or don't want to understand.
+
+
+### Project complexity ceiling
+
+Overall lack of features in pure C doesn't allow to use it for writing really complex projects (millions lines of code) with reasonable development costs and acceptable reliability.
+
+There are several notable examples of huge projects, written in C++.
+Writing them in C wasn't viable.
+This includes:
+
+* LLVM project.
+  It includes C++ compiler frontend (*clang*), architecture-independent optimization pipelines, code generators for diverse set of CPU architectures, linker (*lld*), debugger, etc.
+  Its main competitor GCC was first written in C, but was switched to C++.
+* Chromium.
+  This is one of two modern browsers, many others are just Chromium derivatives.
+  It's so huge, that it's practically impossible nowadays to write a browser without using Chromium codebase, since it requires writing millions lines of code.
+* Unreal Engine.
+  This game engine is de-facto standard in modern AAA games.
+  Its development started in 90s, and almost from the beginning it was written in C++.
+  There are only a couple of competitors, most of them are also being developing 15+ years.
+  Writing something similar from scratch isn't viable.
+* Microsoft Office.
+  It isn't open-source, but it's known from its developers, that it's written in C++ and is huge.
+
+Notable exceptions of large pure C codebases:
+
+* Linux kernel is written in C, since its development was started when C++ was still in its early days.
+  Also Linus Torvalds actively opposes C++ usage.
+
+I don't say, that it's generally impossible to write a huge project using pure C.
+Linux kernel example shows, that it's possible.
+But it's not economical to do so - using pure C may lead to development costs explosion, especially for projects with large complexity.
+But such costs explosion scale highly depends on project specifics - for projects with a lot of not so complex code (like Linux kernel with a lot of drivers integrated into it) it's not so huge, compared to something like a modern web-browser.
+
+
+### Possible reasons for the pure C heresy
+
+But why exactly some people leave holy C++ church and fall into the pure C heresy?
+It's still unclear for me, why exactly.
+But I have some possible explanations:
+
+* Some beginner programmers may get scared of C++ complexity and they reject it, because they don't want to invest their time to learn C++ properly.
+  For them it's much easier to continue writing in pure C (which is easier to learn) or use C++ in C style.
+  My counterargument is following - it's true, that it takes a lot of time to learn C++ (or a language with similar complexity), but it's a long-time investment with great returns in future.
+  Continuing using simpler language will lead to lower overall programming performance and less code reliability.
+* Some programmers go further and learn C++, but eventually reject it, because of some scary C++ things.
+  This was maybe the case in earlier stages of C++ development (prior to C++11), when C++ was still uncomfortable to use because of lacking move-semantics.
+  Also back than OOP-style was heavily used (Java influence) and big inheritance hierarchies were notable ugly.
+* Some embedded developers are pure C heretics.
+  This was caused because of unavailability of C++ compilers for some embedded systems and overall system resources scarcity.
+  Embedding development has a long tradition of pure C usage and there is some inertia in this circles, which opposes C++.
+* Some game developers are also vulnerable to the pure C heresy.
+  Earlier games were mostly written in C, especially for consoles, since console developers provided only C compilers for their platforms.
+  But it's no longer the case, most popular modern consoles have C++ compilers available, so that game engines written in C++ (like Unreal Engine) support consoles.
+  Even with C++ compilers availability some people preferred to use pure C, since some C++ features were too costly for games, especially features relying on heap allocation.
+* A rare example of pure C heretics are programmers, who previously used slow languages like Java or Python, but switched to C in order to achieve necessary for their tasks performance.
+  They usually assume, that C is the best language to achieve great performance, but they don't necessary know, that C++ offers the same performance, but with better programming speed and less errors.
+
+
+### Conclusion
+
+I hope, that pure C heresy will be defeated - sooner or later.
+I don't think we require inquisition to do this, but some sort of council (in terms of christian councils) may be required, where this heresy should be condemned.
+Such council may take place in form of a programming conference, for example.
+
+Ideologists of this heresy (even prominent ones) require no punishment, I think, their ideas become at the end irrelevant.
+Perhaps some of them can leave this heresy.
+
+
+### Further reading/viewing
+
+A [video](https://www.youtube.com/watch?v=D7Sd8A6_fYU), where its author tries to describe motivation of pure C heretics.
