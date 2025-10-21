@@ -14,8 +14,8 @@ Good performance is achievable only via compilation into native code.
 Interpretation or virtual machine (even with JIT) is too slow.
 Because of that Ü targets machine code.
 
-It is based on LLVM library and thus uses whole LLVM infrastructure.
-Ü compiler supports whatever processor architecture that is supported by LLVM.
+Ü compiler is based on LLVM library and thus uses the whole LLVM infrastructure.
+It can support whatever processor architecture that is supported by LLVM.
 
 
 ### Context-free syntax
@@ -34,10 +34,10 @@ Thus reverse definitions order (like in C) and (sometimes) prototypes usage may 
 
 `import` in Ü means compilation of a specified file and logical merging of the result into current compilation unit.
 All imported files are compiled independently on each other, rather than merging file contents together and compiling this "as is", as (for example) C++ compiler does.
-All contents of imported files considered to be inline - no special `inline` keyword is required.
+All contents of imported files is considered to be inline - no special `inline` keyword is required.
 
 It is important to mention that imports in Ü are designed for usage of separate header/implementation files.
-It is recommended to do such, but it still possible to use "header-only" files.
+It is recommended to do such, but it is still possible to use "header-only" files.
 Import dependency loops are not possible.
 
 The model with preferred usage of "headers" may seem to be outdated, but in reality it forces to decouple interface from implementation details and improves readability of the interface part.
@@ -50,7 +50,7 @@ Types for variables may be specified, but it is possible to avoid type specifyin
 There are also a couple of constructions where it is unnecessary to specify types, but mostly they must be specified.
 
 There is no complex type calculation mechanisms.
-This improves code readability and significantly simplifies compiler.
+This improves code readability and significantly simplifies the compiler.
 
 
 ### Static strong typing
@@ -61,7 +61,7 @@ It is not only static, but (almost) strong.
 Type conversions between fundamental types are always explicit.
 But it is possible to use some sort of auto-conversion for user-defined types.
 
-Static strong type system is one of requirements for safety.
+Static strong type system is one of necessary requirements for achieving safety.
 With any other kind of type system it is almost impossible to write reliable error-free code.
 
 
@@ -76,7 +76,7 @@ It is still possible to shot the leg via `unsafe` blocks/expressions/functions, 
 The same mechanism, that ensures memory safety, is also used to ensure thread safety.
 
 There are of course some disadvantages of this mechanism.
-A special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
+Special notation for functions and class fields is sometimes required, that may seem to be a little bit verbose.
 Some (uncommon) code patterns are not (effectively) achievable in Ü without usage of `unsafe`.
 But in most cases usage of `unsafe` is rarely needed - mostly for interaction with foreign code.
 
@@ -99,7 +99,7 @@ But for code simplicity references are not a part of the type system, rather tha
 ### Assignment/copying model
 
 Ü supports copying/assignment via just `=` for many types, including user types (if `=` is defined).
-There is no need to call something like `clone` to create copy of a value.
+There is no need to call something like `clone` to create a copy of a value.
 
 But Ü is still effective and allows to avoid unnecessary copying.
 Temporary values are effectively moved, named variables may be moved manually via `move` operator.
@@ -108,7 +108,7 @@ Temporary values are effectively moved, named variables may be moved manually vi
 ### No memory-dependent objects
 
 Objects in Ü have no specific defined memory location, as (for example) C++ requires.
-This allows to move objects effectively from one location to another and thus speed-up result code.
+This allows to move objects effectively from one location to another and thus speed-ups result code.
 In terms of C++ this means, that no non-trivially-relocable types are allowed.
 
 
@@ -129,8 +129,8 @@ Usage of destructors allows to implement robust and safe memory and resource man
 
 ### Functions overloading
 
-Ü supports defining functions with same name in same space, as soon as their signatures are different.
-This allows to avoid boilerplate by defining different names/name suffixes for functions that do almost the same except a couple of details.
+Ü supports defining functions with same name in same scope, as soon as their signatures are different.
+This allows to avoid boilerplate by defining different names/name suffixes for functions that do almost the same except of a couple of details.
 
 
 ### Operators overloading
@@ -179,7 +179,7 @@ If it is necessary, something like generics and traits may be added in future.
 ### Runtime polymorphism via inheritance
 
 Ü supports inheritance for classes and virtual methods.
-It is similar to C++, but is stronger, that allows to avoid some mistakes.
+It is similar to C++, but is stricter, that allows to avoid some mistakes.
 
 Inheritance in Ü uses zero or one base and zero or many interfaces model.
 
@@ -193,7 +193,7 @@ This allows for most classes not to be polymorph and thus to avoid polymorhpism 
 No exceptions means no hidden control flow and no possibility to silently ignore errors.
 This allows to improve overall code reliability.
 
-The absence of exceptions also may improve runtime performance and reduce result executables size.
+The absence of exceptions also improves runtime performance (comparing to languages with exceptions) and reduces result executables size.
 
 
 ### Compile-time evaluation
@@ -201,7 +201,7 @@ The absence of exceptions also may improve runtime performance and reduce result
 Ü supports compile-time evaluation via `constexpr` mechanism.
 Simple expressions and calls to `constexpr` functions with all arguments - compile-time constants are evaluated in compile-time.
 
-A function may be marked as `constexpr` if it uses a safe and deterministic subset of Ü - no `unsafe`, no memory allocations, no runtime polymorphism.
+A function may be marked as `constexpr` if it uses safe and deterministic subset of Ü - no `unsafe`, no memory allocations, no runtime polymorphism.
 
 
 ### Compile-time type information
@@ -213,7 +213,7 @@ Together with `constexpr` evaluation it allows to write template code with diffe
 ### Mixins as ultimate metaprogramming solution
 
 Ü provides arbitrary compile-time code generation - via mixin strings.
-This allows to generate any Ü code in compilation time and thus almost eliminates need for any external code generation tools/scripts.
+This allows to generate any Ü code in compilation time and thus almost eliminates the need for any external code generation tools/scripts.
 Some code, impossible with templates, is possible to generate using mixins.
 
 
@@ -221,7 +221,7 @@ Some code, impossible with templates, is possible to generate using mixins.
 
 Ü supports namespaces like in C++.
 Namespaces may be used in different files, they may be opened and closed multiple times, nested namespaces are possible.
-Mechanism of namespaces allows to structure code independent on project files structure.
+The mechanism of namespaces allows to structure code independent on project files structure.
 
 
 ### Async functions
