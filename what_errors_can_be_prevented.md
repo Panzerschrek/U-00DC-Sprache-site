@@ -200,7 +200,7 @@ fn Foo( C& c ) : i32
 
 ### Accessing moved variables
 
-`move` operator in Ü ends lifetime for variable specified.
+The `move` operator in Ü ends lifetime for variable specified.
 So, accessing it after moving is an error and such errors are detected.
 
 ```
@@ -248,7 +248,7 @@ fn Bar()
 		var i32 x= 0;
 		ref.reset(x); // Save reference to "x" inside "ref".
 	} // Compilation error - destroyed variable "x" still has references.
-	auto x_val= ref.try_deref(); // Without error generated above this code can access destroyed variable "x".
+	auto x_val= ref.try_deref(); // Without the error generated above this code can access destroyed variable "x".
 }
 ```
 
@@ -350,7 +350,7 @@ fn Foo( i32 x ) // Compilation error - argument "x" is unused.
 
 Even in such safe language like Ü it's impossible to prevent all kinds of errors during compilation.
 Ü isn't powerful enough to detect them.
-Doing so is impossible in a language with rich possibilities like Ü, without adding too many constrains.
+Doing so is impossible in a language with rich possibilities like Ü without adding too many constrains.
 Here are listed some mistakes, which still may happen in Ü programs.
 
 
@@ -374,7 +374,7 @@ fn MultiplyTwoNumbers( u32 x, u32 y ) : u32
 ### Halting the program
 
 Ü has `halt` operator for abnormal program termination.
-Nothing prevents one to use it to cause such termination or trigger some code, which causes such termination.
+Nothing prevents one to use it to cause such termination or trigger some code which causes such termination.
 It's not considered to be a problem, since such termination happens in a controlled manner, compared to undefined behavior and program state corruption typical for languages like C++.
 
 ```
@@ -461,13 +461,13 @@ fn Foo()
 	auto len= unsafe( strlen( $<(s[0]) ) );
 }
 
-fn nomangle strlen( $(char8) ptr ) unsafe : size_type;
+fn nomangle strlen( $(char8) ptr ) unsafe call_conv( "C" ) : size_type;
 ```
 
 
 ### Memory leaks via shared pointers
 
-Shared pointer library classes in Ü use reference counting - in order to detect when it's necessary to destroy and free stored value.
+Shared pointer library classes in Ü use reference counting - in order to detect when it's necessary to destroy the stored value and free its memory.
 But it's possible to create a cycle with such pointers and members of such cycle will be never freed, unless someone breaks it manually.
 
 ```
@@ -541,7 +541,7 @@ fn Bar( i32 x )
 ### Infinite loops
 
 Ü can't generally prevent infinite loops.
-It's easily to create one.
+It's easy to create one.
 
 ```
 fn Foo()
