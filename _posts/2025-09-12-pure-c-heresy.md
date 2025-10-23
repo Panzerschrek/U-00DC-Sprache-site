@@ -160,7 +160,7 @@ But the most important Ü feature is its reference checking mechanism, which in 
 What in C++ is often a runtime crash (if one has a luck to catch such crash while debugging) is compilation error in Ü.
 
 
-## A couple of words about Rust
+### A couple of words about Rust
 
 Rust is generally a good C++ successor language.
 It provides safety (as Ü does) and just like C++ has a lot of neat features.
