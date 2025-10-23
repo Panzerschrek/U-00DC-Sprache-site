@@ -3,10 +3,11 @@
 On this page you can try Ü interpreter.
 WebAssembly is required.
 
-Note that interpreter is pretty limited.
-It is recommended to install and use proper compiler.
+Note that the interpreter is pretty limited.
+It is recommended to download and use proper Ü compiler.
 
 *ustlib* is available for import inside interpreter, but no other files.
+OS-related functionality isn't supported.
 
 <div>
 Input code:
