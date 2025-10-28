@@ -1,8 +1,8 @@
 ---
-title:  Switch Operator
+title:  Switch operator
 ---
 
-## Switch Operator
+## Switch operator
 
 ### Motivation
 
