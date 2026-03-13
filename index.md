@@ -85,4 +85,4 @@ See more information in the project repository.
 
 ### Authors
 
-Copyright © 2016-2025 "Panzerschrek".
+Copyright © 2016-2026 "Panzerschrek".
