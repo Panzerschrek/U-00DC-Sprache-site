@@ -13,8 +13,8 @@ OS-related functionality isn't supported.
 Input code:
 <br>
 <textarea id="input" spellcheck="false" style="font-family: monospace; width: 100%;" rows="12">
-import "/main_wrapper.u"
-import "/stdout.u"
+import "/main_wrapper.iu"
+import "/stdout.iu"
 pretty_main
 {
 	ust::stdout_print("Hello, world!\n");
