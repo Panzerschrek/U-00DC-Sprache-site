@@ -233,7 +233,7 @@ fn Bar() unsafe;
 Ü compiler ensures that no variable can be accessed after its lifetime ended.
 
 ```
-import "/optional_ref.u"
+import "/optional_ref.iu"
 
 fn Foo() : i32&
 {
@@ -258,7 +258,7 @@ fn Bar()
 Ü reference checking mechanism can statically prevent using heap memory after it was freed.
 
 ```
-import "/vector.u"
+import "/vector.iu"
 
 fn Foo()
 {
@@ -276,7 +276,7 @@ fn Foo()
 Ü reference checking mechanism allows to prevent data access synchronization errors - when two or more threads can modify the same variable without synchronization.
 
 ```
-import "/thread.u"
+import "/thread.iu"
 
 fn Foo()
 {
@@ -378,7 +378,7 @@ Nothing prevents one to use it to cause such termination or trigger some code wh
 It's not considered to be a problem, since such termination happens in a controlled manner, compared to undefined behavior and program state corruption typical for languages like C++.
 
 ```
-import "/optional_ref.u"
+import "/optional_ref.iu"
 
 fn Read( [ i32, 4 ]& arr, size_type i ) : i32
 {
@@ -471,7 +471,7 @@ Shared pointer library classes in Ü use reference counting - in order to detect
 But it's possible to create a cycle with such pointers and members of such cycle will be never freed, unless someone breaks it manually.
 
 ```
-import "/shared_ptr.u"
+import "/shared_ptr.iu"
 
 struct Node
 {
@@ -497,7 +497,7 @@ It's generally impossible to prevent deadlocks in compilation time, especially f
 So, one can easily create a deadlock.
 
 ```
-import "/shared_ptr_mt.u"
+import "/shared_ptr_mt.iu"
 
 fn Foo()
 {
@@ -563,7 +563,7 @@ If operating system fails to allocate enough memory for a program written in Ü,
 Other languages like C++ or Java try to throw exceptions if memory allocation fails, but usually this doesn't work well and programs aren't designed to catch and handle such exceptions.
 
 ```
-import "/string.u"
+import "/string.iu"
 
 fn Foo()
 {
