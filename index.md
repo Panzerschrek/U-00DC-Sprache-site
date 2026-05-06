@@ -1,3 +1,7 @@
+---
+title: Ü programming language
+---
+
 ### About
 
 Ü is a statically-typed compiled programming language.
