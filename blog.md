@@ -18,4 +18,3 @@ Habr (russian), in retrochronological order:
 * [Язык програмирования Ü — нелёгкий путь написания самодостаточного компилятора](https://habr.com/ru/articles/580024/)
 * [Язык программирования Ü. Введение, мотивация к созданию, цели](https://habr.com/ru/articles/465553/)
 
-[Thread](https://gamedev.ru/flame/forum/?id=230610) of the project on GameDev.ru (russian)
