@@ -1,5 +1,5 @@
 ---
-title: Variadic function support
+title: Variadic functions support
 ---
 
 ### Introduction
