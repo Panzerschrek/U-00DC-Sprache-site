@@ -2,6 +2,8 @@
 title: Unit-testing
 ---
 
+## Unit-testing in Ü
+
 Now Ü has built-in unit-testing functionality.
 Writing a unit-test is as simple as this:
 
@@ -38,7 +40,7 @@ Also unit-test functions are marked with special metadata, so that it's possible
 What happens later is more interesting.
 While the Ü build system links regular build targets, unit-test functions are internalized and thus optimized-out, so that they are not present in result machine code.
 But it also creates executables containing unit-tests for each build target.
-This is done by launching the Ü compiler with special flag, which enables building of a special table where all unit-test functions are listed.
+This is done by launching the Ü compiler with special flag, which enables building of a table where all unit-test functions are listed.
 Then the result machine code containing this table is linked against a special library, which knows how to use it.
 
 How this unit-testing library is implemented?
@@ -54,7 +56,7 @@ It functions almost exactly like unwinding in C++ happening after an exception i
 But Ü has no exceptions or even unwinding.
 It was a design decision not to implement it.
 Exceptions make things harder by obscuring control-flow and breaking local reasoning.
-Unwinding isn't implemented, since it's again breaks local reasoning and requires writing code in a unwinding-safe way, which is hard to do.
+Unwinding isn't implemented, since it's again breaks local reasoning and requires writing code in an unwinding-safe way, which is hard to do.
 
 So, Ü needed a way to report test failures in some other way.
 First I tried experimenting with `setjmp`/`longjmp` approach and signal handlers.
@@ -76,7 +78,7 @@ So, it works, but it may be too slow if many unit-tests (hundreds to thousands) 
 In the end I decided to use a more tricky approach.
 A separate process is started for running unit-tests.
 Many unit-tests are run sequentially inside it, as long as no test failure/crash is detected.
-If it's the case, the parent process restarts the child to continue running tests.
+In case of test failure or other crash, the parent process restarts the child to continue running tests.
 A block of shared memory is used between the parent and child processes to track already finished tests or tests which have been started, but failed.
 Since restarting a child process isn't cheap, there is a limit on how many times it can be done, like 32 times.
 So, only up to 32 failed test-cases can be reported, which isn't ideal, but mostly fine.
@@ -129,7 +131,7 @@ Creating unit-tests in Ü is as easy as writing a `fn_test` function and running
 No extra setup is necessary.
 No thirdparty unit-testing framework needs to be integrated.
 No separate custom steps are needed for building and launching unit-tests.
-With such low friction there little to no reason not to write unit-tests, since it's that easy.
+With such low friction there is little to no reason not to write unit-tests, since it's that easy.
 And since unit-test linking is turned-on by-default, there is no danger to forget by mistake that no unit-tests are actually run.
 
 It's assumed, that such low-friction may encourage writing unit-tests.
