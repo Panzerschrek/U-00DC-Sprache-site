@@ -236,3 +236,10 @@ Since Ü is relatively fast, it allows to write effective concurrent programs fo
 Such functions are named lambdas.
 They are useful in combination with functions/algorithms accepting a function-like object.
 It's much easier to pass a lambda, rather than creating a separate class with overloaded `()` operator for only single use.
+
+
+### Built-in unit-testing
+
+Ü supports inline unit-tests (defined in the same files where regular code is placed).
+And it is able to run them without much effort.
+This makes writing unit-tests almost frictionless and thus may improve result software quality.
