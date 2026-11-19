@@ -30,13 +30,13 @@ Running such tests is possible via simple command *test* supported now by the Ü
 ### Implementation details
 
 `fn_test` is just a special syntax, which allows defining a unit-test function.
-Unit-test functions are almost like regular ones, but there are small difference in the way how they are built.
+Unit-test functions are almost like regular ones, but there are small differences in the way how they are built.
 They get internal encoded names, so that it's not possible to reference a unit-test (call it manually).
 They always have `external` linkage and unit-test functions defined in imported files get `comdat`, so that they are deduplicated.
 Also unit-test functions are marked with special metadata, so that it's possible to identify them and process later.
 
 What happens later is more interesting.
-While the Ü build system builds regular build targets, unit-test functions are internalized and thus optimized-out, so that they are not present in result machine code.
+While the Ü build system links regular build targets, unit-test functions are internalized and thus optimized-out, so that they are not present in result machine code.
 But it also creates executables containing unit-tests for each build target.
 This is done by launching the Ü compiler with special flag, which enables building of a special table where all unit-test functions are listed.
 Then the result machine code containing this table is linked against a special library, which knows how to use it.
@@ -77,7 +77,7 @@ In the end I decided to use a more tricky approach.
 A separate process is started for running unit-tests.
 Many unit-tests are run sequentially inside it, as long as no test failure/crash is detected.
 If it's the case, the parent process restarts the child to continue running tests.
-A block of shared memory is used between the parent and child processes to mark already finished tests or tests which are (likely) failed.
+A block of shared memory is used between the parent and child processes to track already finished tests or tests which have been started, but failed.
 Since restarting a child process isn't cheap, there is a limit on how many times it can be done, like 32 times.
 So, only up to 32 failed test-cases can be reported, which isn't ideal, but mostly fine.
 It's enough work for a programmer to identify what went wrong and to fix failed tests.
@@ -141,9 +141,9 @@ And more unit-tests means better overall quality of the result software written 
 After unit-testing functionality has been implemented, some unit-tests have been added in various places of Ü codebase.
 This includes parts of Compiler1 and the build system.
 And they seem to work well.
-A lot of functionality remains uncovered by such unit-tests, primary because it has been already been written and debugged properly and because there are other tests covering it.
-But I expect, that new unit-tests may be added for new pieces of functionality.
+A lot of functionality remains uncovered by such unit-tests, primary because it has been already written and debugged properly and because there are other ways for testing it.
+But I expect, that new unit-tests may be added for new pieces of functionality in future.
 
 There is no drastic increase in build times caused by linking unit-test executables.
-It's not entirely free, but fast enough in order not to care about it.
+It's not entirely free, but fast enough in order to not care about it.
 And if in some rare case it creates some undesirable slow-down, one can still disable unit-tests for a particular build target.
